@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>12Rashi - Live Astrology, Kundli & Consultations</title>
+    <meta name="description" content="Comprehensive Vedic astrology platform featuring live consultations, Kundli analytics, daily horoscopes, AI predictions, Vedic sacred mantras & remedies, and partner astrologer portal." />
+    <meta property="og:title" content="12Rashi - Live Astrology, Kundli & Consultations" />
+    <meta property="og:description" content="Connect with verified astrologers, get instant Kundli predictions, sacred Vedic mantras, remedies, and daily planetary transits." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#ea580c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="12Rashi" />
+    <link rel="canonical" href="https://12rashi.com/" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="alternate" type="application/manifest+json" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+    <script>
+      // Defensive error handling for cross-origin third-party scripts and iframe sandbox restrictions
+      window.addEventListener('error', function (event) {
+        if (!event || event.message === 'Script error.' || !event.filename) {
+          // Prevent generic cross-origin script error from bubbling to uncaught error monitors
+          if (event && event.preventDefault) event.preventDefault();
+          return true;
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (event && event.reason) {
+          var msg = String(event.reason.message || event.reason);
+          if (msg.indexOf('SecurityError') !== -1 || msg.indexOf('serviceWorker') !== -1 || msg.indexOf('caches') !== -1) {
+            if (event.preventDefault) event.preventDefault();
+          }
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-orange-50/30 text-stone-900 antialiased selection:bg-orange-500 selection:text-white transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      try {
+        if ('serviceWorker' in navigator) {
+          var isProduction = window.location.hostname === '12rashi.com' || window.location.hostname === 'www.12rashi.com';
+          if (isProduction) {
+            window.addEventListener('load', function () {
+              navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then(function (reg) {
+                  console.log('12Rashi PWA ServiceWorker active, scope:', reg.scope);
+                })
+                .catch(function (err) {
+                  console.debug('12Rashi PWA ServiceWorker notice:', err);
+                });
+            });
+          } else {
+            // In development or preview environments, clear any stale service workers and caches safely
+            navigator.serviceWorker.getRegistrations()
+              .then(function (registrations) {
+                if (registrations && registrations.length) {
+                  for (var i = 0; i < registrations.length; i++) {
+                    registrations[i].unregister().catch(function () {});
+                  }
+                }
+              })
+              .catch(function () {});
+            if ('caches' in window) {
+              caches.keys()
+                .then(function (names) {
+                  if (names && names.length) {
+                    for (var i = 0; i < names.length; i++) {
+                      caches.delete(names[i]).catch(function () {});
+                    }
+                  }
+                })
+                .catch(function () {});
+            }
+          }
+        }
+      } catch (e) {
+        console.debug('SW init handled:', e);
+      }
+    </script>
+  </body>
+</html>

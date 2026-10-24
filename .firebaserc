@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "light-diorama-nmn89"
+  },
+  "targets": {
+    "light-diorama-nmn89": {
+      "hosting": {
+        "rashi12": [
+          "rashi12-app"
+        ]
+      }
+    }
+  }
+}

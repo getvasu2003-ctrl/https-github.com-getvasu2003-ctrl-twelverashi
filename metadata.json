@@ -1,0 +1,6 @@
+{
+  "name": "12Rashi - Live Astrology, Kundli & Consultations",
+  "description": "India's premier astrology platform featuring live consultations, Kundli analytics, daily horoscopes, AI predictions, Vedic sacred mantras & remedies, and partner astrologer portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Account & Data Deletion - 12Rashi</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #292524; max-width: 720px; margin: 0 auto; padding: 24px; background: #fffcf9; }
+    h1 { color: #ea580c; border-bottom: 2px solid #fed7aa; padding-bottom: 8px; font-size: 26px; }
+    h2 { color: #c2410c; margin-top: 24px; font-size: 19px; }
+    p, li { font-size: 15px; color: #44403c; }
+    .badge { display: inline-block; background: #ffedd5; color: #9a3412; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: bold; margin-bottom: 16px; }
+    .box { background: #ffffff; border: 1px solid #fed7aa; border-radius: 14px; padding: 20px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #44403c; }
+    input, select, textarea { width: 100%; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid #d6d3d1; border-radius: 8px; font-size: 15px; }
+    input:focus, textarea:focus { outline: none; border-color: #ea580c; }
+    button { background: #ea580c; color: #fff; font-weight: 700; font-size: 15px; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #c2410c; }
+    .success-msg { display: none; background: #ecfdf5; border: 1.5px solid #6ee7b7; color: #065f46; padding: 14px; border-radius: 8px; margin-top: 16px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="badge">Google Play Data Safety Compliant</div>
+  <h1>12Rashi Account & Data Deletion Request</h1>
+  <p>In accordance with Google Play's User Data Deletion Policy and global privacy regulations, users of <strong>12Rashi</strong> have the right to request permanent deletion of their account and associated personal data.</p>
+
+  <div class="box">
+    <h2>1. Data That Will Be Deleted:</h2>
+    <ul>
+      <li><strong>Astrological Profile:</strong> Full name, gender, date of birth, time of birth, and place of birth.</li>
+      <li><strong>Saved Charts:</strong> All generated Janam Kundli charts, Gun Milan records, and family vault charts.</li>
+      <li><strong>Consultation Transcripts:</strong> Past chat consultation histories and questions submitted to astrologers.</li>
+      <li><strong>Contact Info:</strong> Registered phone number, email address, and notification tokens.</li>
+    </ul>
+
+    <h2>2. Data Retention Policy:</h2>
+    <p>Past billing invoice records (payment gateway transaction IDs) may be retained for accounting and tax compliance as required by Indian financial regulations for up to 180 days before automated purging. No credit/debit card or banking data is stored.</p>
+  </div>
+
+  <div class="box">
+    <h2>Submit Data Deletion Request Online</h2>
+    <p>You can request data deletion directly below without needing to reinstall the app:</p>
+
+    <form id="deletionForm" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label for="phone">Registered Mobile Number / Email *</label>
+        <input type="text" id="phone" placeholder="e.g. +91 9876543210 or yourname@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reason">Reason for Deletion (Optional)</label>
+        <select id="reason">
+          <option value="no_longer_needed">No longer using the app</option>
+          <option value="privacy_concern">Privacy preferences</option>
+          <option value="clean_slate">Want a fresh start with new birth chart</option>
+          <option value="other">Other reason</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Additional Details (Optional)</label>
+        <textarea id="notes" rows="3" placeholder="Provide any additional account details to help us locate your record"></textarea>
+      </div>
+
+      <button type="submit">Request Permanent Account Deletion</button>
+      <div id="successBox" class="success-msg">
+        ✓ Your deletion request has been logged. Our Data Protection Team will verify and purge all associated records within 48 to 72 business hours. A confirmation notification will be sent.
+      </div>
+    </form>
+  </div>
+
+  <h2>Alternative Method: Inside the App</h2>
+  <p>If you still have the 12Rashi app installed, you can wipe your data immediately with 1 tap:</p>
+  <ol>
+    <li>Open the <strong>12Rashi</strong> app.</li>
+    <li>Scroll down to the footer and tap <strong>Legal & Compliance</strong> (or open your Profile).</li>
+    <li>Select <strong>"Delete My Account & Birth Data"</strong>.</li>
+    <li>Confirm the prompt. Your local and cloud birth data will be immediately erased.</li>
+  </ol>
+
+  <h2>Contact Our Data Protection Officer</h2>
+  <p>For urgent deletion inquiries, email: <a href="mailto:support@12rashi.com">support@12rashi.com</a> with the subject line <em>"Data Deletion Request"</em>.</p>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('successBox').style.display = 'block';
+      document.getElementById('phone').value = '';
+      document.getElementById('notes').value = '';
+    }
+  </script>
+</body>
+</html>

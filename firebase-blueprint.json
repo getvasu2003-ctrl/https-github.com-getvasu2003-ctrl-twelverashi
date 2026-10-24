@@ -1,0 +1,168 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile including astrological birth chart inputs and wallet credits",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "rashi": { "type": "string" },
+        "dob": { "type": "string" },
+        "tob": { "type": "string" },
+        "pob": { "type": "string" },
+        "walletBalance": { "type": "number" },
+        "subscription": { "type": "string" },
+        "freeTrialMinutesUsed": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "phone", "walletBalance"]
+    },
+    "WalletTransaction": {
+      "title": "WalletTransaction",
+      "description": "Ledger of wallet credits, Cashfree recharges, and per-minute consultation deductions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["credit", "debit"] },
+        "description": { "type": "string" },
+        "referenceId": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "userId", "amount", "type", "description"]
+    },
+    "ConsultationRecord": {
+      "title": "ConsultationRecord",
+      "description": "Historical record of live chat, audio, or video consultations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "astrologerId": { "type": "string" },
+        "astrologerName": { "type": "string" },
+        "type": { "type": "string", "enum": ["chat", "audio", "video"] },
+        "ratePerMin": { "type": "number" },
+        "durationSeconds": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "notes": { "type": "string" },
+        "remedies": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "userId", "astrologerId", "type", "totalAmount"]
+    },
+    "RemedySankalpOrder": {
+      "title": "RemedySankalpOrder",
+      "description": "Sacred Vedic remedy digital sankalp booking records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "mantraTitle": { "type": "string" },
+        "devoteeName": { "type": "string" },
+        "gotra": { "type": "string" },
+        "temple": { "type": "string" },
+        "dakshina": { "type": "number" },
+        "paymentStatus": { "type": "string" },
+        "certificateNumber": { "type": "string" },
+        "cashfreeOrderId": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "mantraTitle", "dakshina", "paymentStatus"]
+    },
+    "PartnerAstrologer": {
+      "title": "PartnerAstrologer",
+      "description": "Partner astrologer profile, live availability, rates, and earnings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["online", "busy", "offline"] },
+        "chatRate": { "type": "number" },
+        "callRate": { "type": "number" },
+        "videoRate": { "type": "number" },
+        "totalEarnings": { "type": "number" },
+        "pendingPayout": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "status"]
+    },
+    "FamilyMemberProfile": {
+      "title": "FamilyMemberProfile",
+      "description": "Vedic Kundli profile for family members up to 10 per account",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "relation": { "type": "string" },
+        "name": { "type": "string", "maxLength": 80 },
+        "gender": { "type": "string", "enum": ["male", "female", "other"] },
+        "dob": { "type": "string" },
+        "tob": { "type": "string" },
+        "pob": { "type": "string", "maxLength": 100 },
+        "rashi": { "type": "string" },
+        "nakshatra": { "type": "string" },
+        "lagna": { "type": "string" },
+        "gotra": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "isPrimary": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "relation", "name", "dob", "tob", "pob", "rashi"]
+    },
+    "FcmSubscription": {
+      "title": "FcmSubscription",
+      "description": "Firebase Cloud Messaging device token and horoscope/muhurat alert preferences",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "token": { "type": "string" },
+        "userId": { "type": "string" },
+        "targetRashi": { "type": "string" },
+        "timeSlot": { "type": "string" },
+        "includeAudioFal": { "type": "boolean" },
+        "includeMuhuratAlerts": { "type": "boolean" },
+        "includeRahuKaalWarning": { "type": "boolean" },
+        "deviceType": { "type": "string" },
+        "subscribedAt": { "type": "string" },
+        "lastAlertSentAt": { "type": "string" }
+      },
+      "required": ["id", "token", "targetRashi"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Seeker user profile documents"
+    },
+    "/users/{userId}/family_profiles/{profileId}": {
+      "schema": "FamilyMemberProfile",
+      "description": "Vault of saved family Kundli profiles (up to 10 per account)"
+    },
+    "/users/{userId}/transactions/{txId}": {
+      "schema": "WalletTransaction",
+      "description": "Subcollection of wallet transaction history"
+    },
+    "/consultations/{consultationId}": {
+      "schema": "ConsultationRecord",
+      "description": "Consultation history documents"
+    },
+    "/orders/{orderId}": {
+      "schema": "RemedySankalpOrder",
+      "description": "Vedic remedy e-sankalp booking documents"
+    },
+    "/astrologers/{astrologerId}": {
+      "schema": "PartnerAstrologer",
+      "description": "Astrologer partner profiles and status"
+    },
+    "/fcm_subscriptions/{subId}": {
+      "schema": "FcmSubscription",
+      "description": "FCM device registration tokens and user alert preferences"
+    }
+  }
+}

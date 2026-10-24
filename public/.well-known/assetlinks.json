@@ -1,0 +1,22 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.rashi12.app",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:EB:12:F1:67:86:14:4E:91:29:C2:59:E4:70:95:8F:B0:DA:E2:25:95:A0:24:03:EA:EF:A3:D6:7E:11"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.twelverashi.app",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:EB:12:F1:67:86:14:4E:91:29:C2:59:E4:70:95:8F:B0:DA:E2:25:95:A0:24:03:EA:EF:A3:D6:7E:11"
+      ]
+    }
+  }
+]

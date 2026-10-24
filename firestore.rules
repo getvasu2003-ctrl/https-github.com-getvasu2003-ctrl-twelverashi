@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // User profiles & wallet balances
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if true;
+
+      match /transactions/{txId} {
+        allow read, write: if true;
+      }
+
+      match /family_profiles/{profileId} {
+        allow read, write: if true;
+      }
+    }
+
+    // Live Consultation records
+    match /consultations/{consultationId} {
+      allow read, write: if true;
+    }
+
+    // AstroStore orders
+    match /orders/{orderId} {
+      allow read, write: if true;
+    }
+
+    // Partner Astrologers
+    match /astrologers/{astrologerId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Live Puja Bookings & Subscriptions
+    match /puja_bookings/{bookingId} {
+      allow read, write: if true;
+    }
+
+    // Comprehensive Kundli PDF Report Purchases
+    match /report_purchases/{reportId} {
+      allow read, write: if true;
+    }
+
+    // Connection testing documents
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // FCM Push Subscriptions & Alerts
+    match /fcm_subscriptions/{subId} {
+      allow read, write: if true;
+    }
+  }
+}
