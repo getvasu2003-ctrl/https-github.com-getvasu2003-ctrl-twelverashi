@@ -462,7 +462,7 @@ export const PartnerDashboard: React.FC = () => {
                 ₹{partnerEarnings.month.toLocaleString()}
               </div>
               <span className="text-[11px] text-stone-400 block mt-1">
-                80% Astrologer Net Share
+                70% Astrologer Net Share (70/30 Split)
               </span>
             </div>
 
@@ -552,7 +552,7 @@ export const PartnerDashboard: React.FC = () => {
 
               <div className="space-y-2 text-stone-600 dark:text-stone-300 text-[11px] leading-relaxed">
                 <p>✓ All consultations are routed through 12Rashi's 256-bit encrypted audio/video nodes.</p>
-                <p>✓ 80% net consultation fees are credited instantly upon completion.</p>
+                <p>✓ 70% net consultation fees are credited instantly upon completion (70/30 platform revenue split).</p>
                 <p>✓ Daily DLT SMS session summaries sent to registered mobile: <strong>9831039814</strong>.</p>
                 <p>✓ Maintain dignified Parashari astrological ethics without inducing fear or superstitious panic.</p>
               </div>
@@ -738,7 +738,7 @@ export const PartnerDashboard: React.FC = () => {
                     <label className="font-bold text-stone-900 dark:text-stone-100 block">
                       Live Chat Rate (₹ / minute)
                     </label>
-                    <span className="text-[10px] text-stone-500">Your 80% Net Share: ₹{(chatRate * 0.8).toFixed(1)}/min</span>
+                    <span className="text-[10px] text-stone-500">Your 70% Net Share: ₹{(chatRate * 0.7).toFixed(1)}/min (30% platform)</span>
                   </div>
                   <div className="flex items-center gap-1 font-bold text-sm text-orange-600">
                     <span>₹</span>
@@ -756,7 +756,7 @@ export const PartnerDashboard: React.FC = () => {
                     <label className="font-bold text-stone-900 dark:text-stone-100 block">
                       Audio Voice Call Rate (₹ / minute)
                     </label>
-                    <span className="text-[10px] text-stone-500">Your 80% Net Share: ₹{(callRate * 0.8).toFixed(1)}/min</span>
+                    <span className="text-[10px] text-stone-500">Your 70% Net Share: ₹{(callRate * 0.7).toFixed(1)}/min (30% platform)</span>
                   </div>
                   <div className="flex items-center gap-1 font-bold text-sm text-red-600">
                     <span>₹</span>
@@ -774,7 +774,7 @@ export const PartnerDashboard: React.FC = () => {
                     <label className="font-bold text-stone-900 dark:text-stone-100 block">
                       HD Video Call Rate (₹ / minute)
                     </label>
-                    <span className="text-[10px] text-stone-500">Your 80% Net Share: ₹{(videoRate * 0.8).toFixed(1)}/min</span>
+                    <span className="text-[10px] text-stone-500">Your 70% Net Share: ₹{(videoRate * 0.7).toFixed(1)}/min (30% platform)</span>
                   </div>
                   <div className="flex items-center gap-1 font-bold text-sm text-rose-600">
                     <span>₹</span>
@@ -868,7 +868,7 @@ export const PartnerDashboard: React.FC = () => {
                   ₹{partnerEarnings.pendingPayout.toLocaleString()}
                 </div>
                 <span className="text-[10px] text-stone-400 mt-1 block">
-                  80% Astrologer Net Share • Zero Commission on Tips
+                  70% Astrologer Net Share (70/30 Revenue Split) • Zero Commission on Tips
                 </span>
               </div>
 

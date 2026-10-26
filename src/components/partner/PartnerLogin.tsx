@@ -112,7 +112,7 @@ export const PartnerLogin: React.FC<PartnerLoginProps> = ({ onBackToSeeker }) =>
                 Empowering India's Foremost Astrologers
               </h2>
               <p className="text-xs text-amber-100/90 mt-2 leading-relaxed">
-                Connect with thousands of authentic seekers worldwide. Conduct live voice, video, and chat sessions with transparent 80% revenue share and daily UPI settlements.
+                Connect with thousands of authentic seekers worldwide. Conduct live voice, video, and chat sessions with transparent 70/30 revenue share (70% Astrologer / 30% Platform) and daily UPI settlements.
               </p>
             </div>
 
@@ -123,8 +123,8 @@ export const PartnerLogin: React.FC<PartnerLoginProps> = ({ onBackToSeeker }) =>
                   <DollarSign className="w-3.5 h-3.5 text-amber-300" />
                 </div>
                 <div>
-                  <span className="font-bold text-white">80% Astrologer Revenue Share</span>
-                  <p className="text-[11px] text-amber-200/80">Highest payout in the Indian astrology industry.</p>
+                  <span className="font-bold text-white">70/30 Astrologer Revenue Share</span>
+                  <p className="text-[11px] text-amber-200/80">70% net consultation fee directly to Astrologer with zero commission on tips.</p>
                 </div>
               </div>
 

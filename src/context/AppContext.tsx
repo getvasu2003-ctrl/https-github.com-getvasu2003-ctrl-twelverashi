@@ -320,7 +320,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       durationMinutes: 14,
       ratePerMin: 25,
       grossAmount: 350,
-      netEarned: 280,
+      netEarned: 245, // 70% of 350 (70/30 revenue share)
       rating: 5,
       reviewText: 'Acharyaji predicted my promotion month with 100% accuracy. Very blessed reading!',
       notes: 'Jupiter transit in 9th house indicates high overseas fortune in Nov 2026. Prescribed Yellow Sapphire or 5 Mukhi Rudraksha.',
@@ -338,7 +338,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       durationMinutes: 22,
       ratePerMin: 20,
       grossAmount: 440,
-      netEarned: 352,
+      netEarned: 308, // 70% of 440 (70/30 revenue share)
       rating: 5,
       reviewText: 'Prescribed simple remedies for Manglik dosha. Extremely patient and scholarly.',
       notes: 'Boy has Mars in 8th house, girl has Moon-Saturn conjunction. Recommended Hanuman Chalisa and silver snake pair ritual.',
@@ -356,7 +356,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       durationMinutes: 20,
       ratePerMin: 45,
       grossAmount: 900,
-      netEarned: 720,
+      netEarned: 630, // 70% of 900 (70/30 revenue share)
       rating: 4.9,
       reviewText: 'Excellent advice on entrance door placement without any wall demolition.',
       notes: 'Main factory gate was in South-West Nairutya kona causing cash blockage. Advised copper pyramid installation.',
@@ -374,7 +374,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       durationMinutes: 18,
       ratePerMin: 20,
       grossAmount: 360,
-      netEarned: 288,
+      netEarned: 252, // 70% of 360 (70/30 revenue share)
       rating: 5,
       reviewText: 'Calmed my mind and explained the Rahu Antardasha timeline so clearly.',
       notes: 'Rahu Mahadasha active. Advised feeding black dogs on Saturdays and wearing silver ring.',
@@ -1542,6 +1542,39 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         totalAmount: finalCost,
         notes: newArchiveRecord.transcriptSnippet,
       });
+
+      // If consultation was with a human partner astrologer, credit 70% share to partner earnings (70/30 split)
+      if (finalCost > 0 && (astrologer.id === partnerAstrologer.id || astrologer.id.startsWith('partner-') || !astrologer.isAi)) {
+        const netPartnerShare = Math.round(finalCost * 0.70); // 70% Astrologer Net Share / 30% Platform
+        setPartnerEarnings((prev) => ({
+          ...prev,
+          today: prev.today + netPartnerShare,
+          week: prev.week + netPartnerShare,
+          month: prev.month + netPartnerShare,
+          pendingPayout: prev.pendingPayout + netPartnerShare,
+          totalConsultations: prev.totalConsultations + 1,
+        }));
+
+        const newPartnerRecord: PartnerConsultationRecord = {
+          id: 'CR-' + Date.now().toString().slice(-4),
+          clientName: userProfile.name || 'Client Seeker',
+          clientPhone: userProfile.phone ? `${userProfile.phone.slice(0, 5)}*****` : '+91 98310*****',
+          clientRashi: userProfile.rashi || 'General',
+          clientCity: userProfile.pob || 'India',
+          type,
+          date: 'Today, ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          durationMinutes: Math.max(1, Math.round(elapsedSeconds / 60)),
+          ratePerMin: rate,
+          grossAmount: finalCost,
+          netEarned: netPartnerShare,
+          rating: 5,
+          reviewText: 'Consultation completed successfully.',
+          notes: newArchiveRecord.transcriptSnippet,
+          prescribedRemedies: ['Personalized Astro Remedy'],
+          status: 'completed',
+        };
+        setPartnerConsultationRecords((prev) => [newPartnerRecord, ...prev]);
+      }
 
       // Pop WhatsApp receipt preview dialog automatically
       setSelectedReceiptRecord(newArchiveRecord);

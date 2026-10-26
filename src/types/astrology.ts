@@ -268,7 +268,7 @@ export interface PartnerConsultationRecord {
   durationMinutes: number;
   ratePerMin: number;
   grossAmount: number;
-  netEarned: number; // 80% astrologer share
+  netEarned: number; // 70% astrologer share (70/30 revenue split)
   rating: number;
   reviewText: string;
   notes: string;
