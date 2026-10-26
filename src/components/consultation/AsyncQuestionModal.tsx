@@ -75,7 +75,7 @@ export const AsyncQuestionModal: React.FC = () => {
             <div>
               <h3 className="font-bold text-base leading-tight">Ask an Astrologer (₹99)</h3>
               <p className="text-[11px] text-amber-100">
-                Lentlo Micro-Consultation • 24-Hour Guaranteed Voice / Written Answer
+                12Rashi Micro-Consultation • 24-Hour Guaranteed Voice / Written Answer
               </p>
             </div>
           </div>

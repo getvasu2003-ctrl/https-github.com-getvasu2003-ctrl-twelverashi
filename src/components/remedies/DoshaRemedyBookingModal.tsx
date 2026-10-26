@@ -113,18 +113,21 @@ export const DoshaRemedyBookingModal: React.FC = () => {
     setIsProcessing(true);
 
     try {
-      // 1. If wallet balance is sufficient, deduct from wallet
-      let paymentDone = false;
-      if (walletBalance >= currentPrice) {
-        paymentDone = deductWallet(
-          currentPrice,
-          `Dosha Shanti Sankalp: ${doshaBookingContext.title}`
+      if (walletBalance < currentPrice) {
+        addNotification(
+          'Wallet Top-up Needed',
+          `Wallet balance (₹${walletBalance}) is insufficient for ₹${currentPrice}. Please add funds to proceed with sacred Sankalp.`,
+          'payment'
         );
-      } else {
-        // Direct gateway simulated flow
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        paymentDone = true;
+        setOpenPaymentModal(true);
+        setIsProcessing(false);
+        return;
       }
+
+      const paymentDone = deductWallet(
+        currentPrice,
+        `Dosha Shanti Sankalp: ${doshaBookingContext.title}`
+      );
 
       if (paymentDone) {
         // Register in livePujaService

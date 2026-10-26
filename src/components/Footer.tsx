@@ -244,14 +244,6 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
                   Astro Club VIP Membership Plans
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => setOpenQrStandeeModal(true)}
-                  className="hover:text-orange-400 transition cursor-pointer text-stone-300"
-                >
-                  Temple & Shop QR Standees (Offline-to-Online)
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -282,14 +274,6 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
                 <span className="text-stone-300">Reliance Jio DLT / MSG91</span>
               </div>
             </div>
-
-            <button
-              onClick={() => setOpenDltModal(true)}
-              className="mt-3 w-full py-1.5 px-3 rounded bg-orange-600/30 hover:bg-orange-600/40 text-orange-300 text-xs font-semibold border border-orange-500/40 flex items-center justify-center gap-1.5 cursor-pointer transition"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Verify DLT Registration</span>
-            </button>
           </div>
         </div>
 
@@ -344,20 +328,6 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               className="hover:text-rose-400 transition cursor-pointer underline text-[11px] text-rose-300/80"
             >
               Delete Account & Data
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => setOpenCustomDomainModal(true)}
-              className="hover:text-emerald-400 transition cursor-pointer underline text-[11px] text-emerald-300/90 font-semibold"
-            >
-              Custom Domain & DNS
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => setOpenPlayStoreModal(true)}
-              className="hover:text-sky-400 transition cursor-pointer underline text-[11px] text-sky-300/90 font-semibold flex items-center gap-1"
-            >
-              <span>Play Store Launch Center</span>
             </button>
           </div>
 

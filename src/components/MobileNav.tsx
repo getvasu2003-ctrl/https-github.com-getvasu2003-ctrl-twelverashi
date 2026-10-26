@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext.tsx';
 import { useTranslation } from '../i18n/useTranslation.ts';
-import { Compass, MessageCircle, Flame, UserCheck, Clock, FileText, Users, Radio, Mic, Headphones } from 'lucide-react';
+import { Compass, MessageCircle, FileText, Radio, UserCheck, Sparkles } from 'lucide-react';
 
 interface MobileNavProps {
   activeTab: string;
@@ -13,11 +13,11 @@ export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, setActiveTab })
   const { t } = useTranslation();
 
   const items = [
-    { id: 'astrologers', label: 'Pandits', icon: MessageCircle },
-    { id: 'async-qa', label: 'Ask (Voice)', icon: Mic },
-    { id: 'daily-audio', label: 'Audio Fal', icon: Headphones },
+    { id: 'astrologers', label: 'Astrologers', icon: MessageCircle },
+    { id: 'kundli', label: 'Kundli', icon: FileText },
+    { id: 'horoscope', label: 'Horoscope', icon: Sparkles },
+    { id: 'panchang', label: 'Panchang', icon: Compass },
     { id: 'live-puja', label: 'Live Puja', icon: Radio },
-    { id: 'family-vault', label: 'Vault', icon: Users },
   ];
 
   return (

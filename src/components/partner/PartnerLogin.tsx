@@ -285,7 +285,7 @@ export const PartnerLogin: React.FC<PartnerLoginProps> = ({ onBackToSeeker }) =>
                       {otpSent && (
                         <p className="text-[11px] text-emerald-600 mt-1 flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3" />
-                          <span>OTP simulated via Header TWLVRSH: <strong>748291</strong> (Auto-filled)</span>
+                          <span>OTP sent to your registered mobile number via SMS.</span>
                         </p>
                       )}
                     </div>

@@ -344,22 +344,10 @@ export const AsyncQuestionHub: React.FC<AsyncQuestionHubProps> = ({ onOpenConsul
                         <span>Answered by {q.assignedAstrologer}</span>
                       </span>
                     ) : (
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-1 rounded-full">
-                          <Clock className="w-3.5 h-3.5 animate-spin" />
-                          <span>Acharya Reviewing (Within 24h)</span>
-                        </span>
-
-                        {/* Test simulate instant answer */}
-                        <button
-                          onClick={() => simulateAcharyaReply(q.id)}
-                          className="px-2.5 py-1 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold cursor-pointer transition shadow-xs"
-                          title="Simulate instant astrologer voice note reply for live demonstration"
-                        >
-                          <Zap className="w-3 h-3 inline mr-1" />
-                          Simulate Reply
-                        </button>
-                      </div>
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-1 rounded-full">
+                        <Clock className="w-3.5 h-3.5 animate-spin" />
+                        <span>Acharya Reviewing (Within 24h)</span>
+                      </span>
                     )}
                   </div>
                 </div>

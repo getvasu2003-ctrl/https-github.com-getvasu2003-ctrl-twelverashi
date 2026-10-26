@@ -48,7 +48,7 @@ export const ScheduledConsultationModal: React.FC = () => {
                 </span>
               </div>
               <p className="text-[11px] text-amber-100">
-                Lentlo Automated Slot Booking • Pre-Calculated Panchang & Time Slots
+                12Rashi Verified Astrologer Slot Booking • Pre-Calculated Panchang & Time Slots
               </p>
             </div>
           </div>

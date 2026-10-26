@@ -673,14 +673,6 @@ export const KundliReportsStore: React.FC<KundliReportsStoreProps> = ({ onConsul
                   >
                     Cancel
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => generateAndSaveReport(selectedTier, selectedTier.price)}
-                    className="text-orange-600 hover:underline cursor-pointer font-medium"
-                    title="Generate report in test simulation mode"
-                  >
-                    Instant Demo Unlock (Test Mode)
-                  </button>
                 </div>
               </div>
             </form>

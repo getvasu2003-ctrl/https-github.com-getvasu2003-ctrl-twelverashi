@@ -111,7 +111,7 @@ export const AstroClubModal: React.FC = () => {
             <div>
               <h3 className="font-bold text-base leading-tight">Astro Club VIP Memberships</h3>
               <p className="text-[11px] text-amber-100">
-                Lentlo Recurring Subscription • Bundled Minutes • Fast-Track Queue Priority
+                12Rashi Astro Club VIP • Bundled Minutes • Fast-Track Queue Priority
               </p>
             </div>
           </div>

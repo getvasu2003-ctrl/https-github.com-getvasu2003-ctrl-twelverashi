@@ -549,19 +549,10 @@ export const PaymentModal: React.FC = () => {
                     type="button"
                     onClick={handleCheckCashfreeStatus}
                     disabled={isProcessing}
-                    className="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-[11px] cursor-pointer transition flex items-center gap-1 border border-stone-200 dark:border-stone-700"
+                    className="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-[11px] cursor-pointer transition flex items-center gap-1 border border-stone-200 dark:border-stone-700 ml-auto"
                   >
                     <RefreshCw className={`w-3 h-3 ${isProcessing ? 'animate-spin' : ''}`} />
                     <span>Check Cashfree Status</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleInstantConfirmSimulation}
-                    className="px-2.5 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 hover:bg-emerald-200 text-emerald-800 dark:text-emerald-300 font-semibold text-[11px] cursor-pointer transition ml-auto"
-                    title="Simulate instant payment webhook for test verification"
-                  >
-                    Instant Confirm (Testing)
                   </button>
                 </div>
               </div>
@@ -934,18 +925,11 @@ export const PaymentModal: React.FC = () => {
                   <div className="flex items-center justify-between text-[11px] text-stone-500 px-1">
                     <span className="flex items-center gap-1">
                       <Lock className="w-3 h-3 text-emerald-500" />
-                      256-Bit SSL Encrypted
+                      256-Bit SSL Encrypted & RBI Authorized Gateway
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPaymentMethod('quick_test');
-                        setTimeout(handlePay, 50);
-                      }}
-                      className="text-stone-400 hover:text-orange-600 underline cursor-pointer"
-                    >
-                      Instant Test Top-up (Demo Mode)
-                    </button>
+                    <span className="text-stone-400">
+                      100% Secure Checkout
+                    </span>
                   </div>
                 </div>
 

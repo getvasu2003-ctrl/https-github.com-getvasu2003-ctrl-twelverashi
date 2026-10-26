@@ -77,8 +77,8 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
   const primaryNavLinks = [
     { id: 'astrologers', label: t('nav_astrologers'), icon: '🔮' },
     { id: 'kundli', label: t('nav_kundli'), icon: '📜' },
+    { id: 'horoscope', label: 'Horoscope', icon: '🪐' },
     { id: 'panchang', label: t('nav_panchang'), icon: '🧭' },
-    { id: 'daily-audio', label: 'Audio Rashi Fal', icon: '🎧' },
     { id: 'live-puja', label: 'Live Puja', icon: '🔴' },
     { id: 'store', label: 'Remedies', icon: '🪔' },
   ];
@@ -150,35 +150,6 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
               <span>Tour</span>
             </button>
 
-            {/* Temple & Event QR Standees */}
-            <button
-              onClick={() => setOpenQrStandeeModal(true)}
-              className="hidden sm:inline-flex items-center gap-1 bg-black/20 hover:bg-black/30 text-amber-100 text-[11px] font-semibold px-2 py-0.5 rounded cursor-pointer transition border border-white/20"
-              title="Temple & Shop QR Standees (Offline-to-Online Engine)"
-            >
-              <QrCode className="w-3 h-3 text-amber-300" />
-              <span>Temple QR Standees</span>
-            </button>
-
-            {/* DLT Registration Button */}
-            <button
-              onClick={() => setOpenDltModal(true)}
-              className="inline-flex items-center gap-1 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 text-[11px] font-semibold px-2 py-0.5 rounded cursor-pointer transition border border-amber-300/30"
-              title="View TRAI Jio DLT SMS Registration (Header: TWRSHI [1205174948652740996], PE: 1201171886368224321)"
-            >
-              <ShieldCheck className="w-3 h-3 text-amber-300" />
-              <span>Jio DLT (TWRSHI)</span>
-            </button>
-
-            {/* Cashfree PG Status */}
-            <button
-              onClick={() => setOpenPaymentModal(true)}
-              className="hidden md:inline-flex items-center gap-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 text-[11px] font-semibold px-2 py-0.5 rounded cursor-pointer transition border border-emerald-400/30"
-              title="Cashfree Production Gateway Active (App ID: 7323148630f6...)"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Cashfree PG Active</span>
-            </button>
 
             {/* Distinct Astrologer Partner Login / Console Entry */}
             <button
@@ -408,25 +379,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             </button>
           )}
 
-          {/* Custom Domain & DNS Mapping Quick Access */}
-          <button
-            onClick={() => setOpenCustomDomainModal(true)}
-            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 cursor-pointer transition text-xs font-semibold"
-            title="Custom Domain & DNS Mapping Manager (12rashi.com)"
-          >
-            <Globe className="w-3.5 h-3.5" />
-            <span className="hidden xl:inline text-[11px] font-bold">Domain & DNS</span>
-          </button>
 
-          {/* Google Play Store Release Center Quick Access */}
-          <button
-            onClick={() => setOpenPlayStoreModal(true)}
-            className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-sky-500/30 bg-sky-500/10 hover:bg-sky-500/20 text-sky-700 dark:text-sky-400 cursor-pointer transition text-xs font-semibold"
-            title="Google Play Store Release Center & .AAB App Bundle Generator"
-          >
-            <Smartphone className="w-3.5 h-3.5" />
-            <span className="hidden xl:inline text-[11px] font-bold">Play Store</span>
-          </button>
 
           {/* Dedicated English / Hindi Language Switcher */}
           <LanguageSwitcher />
@@ -583,16 +536,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
               <span>Fair Billing</span>
             </button>
 
-            <button
-              onClick={() => {
-                setOpenQrStandeeModal(true);
-                setMobileMenuOpen(false);
-              }}
-              className="p-2 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-800 dark:text-stone-200 font-bold flex items-center gap-1.5 cursor-pointer"
-            >
-              <QrCode className="w-3.5 h-3.5 text-orange-600" />
-              <span>QR Standees</span>
-            </button>
+
 
             <button
               onClick={() => {
