@@ -8,56 +8,7 @@ import {
   QrStandeeConfig,
 } from '../types/astrology.ts';
 
-export const INITIAL_FAMILY_PROFILES: FamilyProfile[] = [
-  {
-    id: 'fam-1',
-    relation: 'Self',
-    name: 'Vasudev Sharma',
-    gender: 'male',
-    dob: '1992-08-15',
-    tob: '06:30',
-    pob: 'Kolkata, West Bengal',
-    rashi: 'Simha (Leo)',
-    nakshatra: 'Magha',
-    isPrimary: true,
-  },
-  {
-    id: 'fam-2',
-    relation: 'Spouse',
-    name: 'Priyanka Sharma',
-    gender: 'female',
-    dob: '1995-11-22',
-    tob: '14:15',
-    pob: 'Patna, Bihar',
-    rashi: 'Vrishchika (Scorpio)',
-    nakshatra: 'Anuradha',
-    isPrimary: false,
-  },
-  {
-    id: 'fam-3',
-    relation: 'Child',
-    name: 'Aarav Sharma',
-    gender: 'male',
-    dob: '2021-04-10',
-    tob: '09:45',
-    pob: 'Kolkata, West Bengal',
-    rashi: 'Mesha (Aries)',
-    nakshatra: 'Ashwini',
-    isPrimary: false,
-  },
-  {
-    id: 'fam-4',
-    relation: 'Mother',
-    name: 'Sunita Sharma',
-    gender: 'female',
-    dob: '1968-02-18',
-    tob: '05:10',
-    pob: 'Varanasi, Uttar Pradesh',
-    rashi: 'Kumbha (Aquarius)',
-    nakshatra: 'Shatabhisha',
-    isPrimary: false,
-  },
-];
+export const INITIAL_FAMILY_PROFILES: FamilyProfile[] = [];
 
 export const INITIAL_SCHEDULED_BOOKINGS: ScheduledBooking[] = [];
 

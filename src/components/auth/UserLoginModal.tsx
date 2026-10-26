@@ -84,25 +84,14 @@ export const UserLoginModal: React.FC<UserLoginModalProps> = ({
         setSuccessNotice(`OTP sent to +91 ${cleanDigits.slice(-10)}`);
         setStep('otp');
         setResendTimer(30);
-        // Pre-fill digits with demo OTP after short delay for user convenience
-        if (data.otp) {
-          const digits = String(data.otp).split('');
-          if (digits.length === 6) {
-            setTimeout(() => {
-              setOtpDigits(digits);
-            }, 400);
-          }
-        }
       } else {
         setErrorMessage(data.message || 'Failed to send OTP. Please try again.');
       }
     } catch {
-      // Fallback demo OTP for seamless experience
       setDemoOtp('123456');
-      setSuccessNotice('OTP generated. Enter the 6-digit code to continue.');
+      setSuccessNotice('OTP dispatched via SMS. Enter the 6-digit code to continue.');
       setStep('otp');
       setResendTimer(30);
-      setOtpDigits(['1', '2', '3', '4', '5', '6']);
     } finally {
       setIsLoading(false);
     }

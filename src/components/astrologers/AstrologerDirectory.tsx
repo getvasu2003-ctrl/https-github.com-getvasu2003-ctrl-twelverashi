@@ -549,13 +549,15 @@ export const AstrologerDirectory: React.FC<AstrologerDirectoryProps> = ({
                 <Sparkles className="w-4 h-4" />
               </span>
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <h4 className="font-bold text-sm text-stone-900 dark:text-stone-100">
-                    Live Planetary Transit Nudges for {activeFamilyProfile.name}
+                    {activeFamilyProfile?.name ? `Live Planetary Transit Nudges for ${activeFamilyProfile.name}` : 'Live Vedic Planetary Transit Nudges & Gochar'}
                   </h4>
-                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 font-bold">
-                    {activeFamilyProfile.relation} • {activeFamilyProfile.rashi}
-                  </span>
+                  {activeFamilyProfile?.rashi && (
+                    <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 font-bold">
+                      {activeFamilyProfile.relation} • {activeFamilyProfile.rashi}
+                    </span>
+                  )}
                 </div>
                 <p className="text-[11px] text-stone-500 dark:text-stone-400">
                   Personalized Gochar analysis computed from your saved birth charts

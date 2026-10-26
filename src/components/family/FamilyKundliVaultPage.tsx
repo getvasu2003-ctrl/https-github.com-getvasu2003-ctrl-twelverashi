@@ -530,6 +530,33 @@ export const FamilyKundliVaultPage: React.FC<FamilyKundliVaultPageProps> = ({
         </div>
       </div>
 
+      {/* If no profiles saved yet */}
+      {familyProfiles.length === 0 && (
+        <div className="p-8 rounded-3xl bg-white dark:bg-stone-900 border border-orange-200 dark:border-stone-800 text-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-orange-100 dark:bg-stone-800 text-orange-600 dark:text-orange-400 flex items-center justify-center mx-auto shadow-inner">
+            <Users className="w-8 h-8" />
+          </div>
+          <div className="max-w-md mx-auto space-y-1">
+            <h3 className="font-serif font-bold text-lg text-stone-900 dark:text-stone-100">
+              Welcome to Your Family Kundli Vault
+            </h3>
+            <p className="text-xs text-stone-500 leading-relaxed">
+              Store accurate birth details for up to 10 family members (spouse, children, parents). During any live consultation, switch between family charts in 1 tap without re-entering birth coordinates.
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              resetForm();
+              setShowForm(true);
+            }}
+            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md transition cursor-pointer inline-flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add Your First Family Member</span>
+          </button>
+        </div>
+      )}
+
       {/* Grid of Saved Profiles */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {familyProfiles.map((p, idx) => {

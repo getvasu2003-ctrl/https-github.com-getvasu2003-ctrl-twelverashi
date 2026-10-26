@@ -143,8 +143,8 @@ interface AppContextType {
 
   // Lentlo Features & Family Kundli Vault (Up to 10)
   familyProfiles: FamilyProfile[];
-  activeFamilyProfile: FamilyProfile;
-  setActiveFamilyProfile: (p: FamilyProfile) => void;
+  activeFamilyProfile: FamilyProfile | null;
+  setActiveFamilyProfile: (p: FamilyProfile | null) => void;
   addFamilyProfile: (p: Omit<FamilyProfile, 'id'>) => boolean;
   updateFamilyProfile: (id: string, data: Partial<FamilyProfile>) => void;
   deleteFamilyProfile: (id: string) => void;
@@ -263,16 +263,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     tob: string;
     pob: string;
     subscription: 'none' | 'gold' | 'platinum';
-  }>({
-    name: 'Vasu Sharma',
-    phone: '9831039814',
-    email: '12rashi.com@gmail.com',
-    rashi: 'Leo (Simha)',
-    gender: 'Male',
-    dob: '1995-08-15',
-    tob: '10:30',
-    pob: 'Kolkata, West Bengal',
-    subscription: 'gold',
+  }>(() => {
+    try {
+      const stored = localStorage.getItem('12rashi_user_profile');
+      if (stored) return JSON.parse(stored);
+      const userStored = localStorage.getItem('12rashi_user');
+      if (userStored) {
+        const u = JSON.parse(userStored);
+        return {
+          name: u.name || '',
+          phone: u.phone || '',
+          email: u.email || '',
+          rashi: u.rashi || '',
+          gender: u.gender || 'Male',
+          dob: u.dob || '',
+          tob: u.tob || '12:00',
+          pob: u.pob || '',
+          subscription: 'none',
+        };
+      }
+    } catch {}
+    return {
+      name: '',
+      phone: '',
+      email: '',
+      rashi: '',
+      gender: 'Male',
+      dob: '',
+      tob: '12:00',
+      pob: '',
+      subscription: 'none',
+    };
   });
 
   // Partner Authentication & Profiles
@@ -414,31 +435,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   } | null>(null);
 
   // Wallet
-  const [walletBalance, setWalletBalance] = useState<number>(450);
-  const [transactions, setTransactions] = useState<PaymentTransaction[]>([
-    {
-      id: 'TXN12R-WELCOME',
-      amount: 100,
-      type: 'credit',
-      category: 'recharge',
-      method: 'UPI',
-      description: '12Rashi Welcome Bonus & First Consultation Credit',
-      timestamp: 'Today, 09:00 AM',
-      status: 'SUCCESS',
-      balanceAfter: 450,
-    },
-    {
-      id: 'TXN12R-INIT',
-      amount: 350,
-      type: 'credit',
-      category: 'recharge',
-      method: 'UPI',
-      description: 'Wallet Recharge via Google Pay (UPI)',
-      timestamp: 'Today, 09:05 AM',
-      status: 'SUCCESS',
-      balanceAfter: 350,
-    },
-  ]);
+  const [walletBalance, setWalletBalance] = useState<number>(() => {
+    try {
+      const stored = localStorage.getItem('12rashi_wallet_balance');
+      if (stored !== null) return Number(stored);
+    } catch {}
+    return 100; // ₹100 Welcome Shubh Shagun Bonus for first consultation
+  });
+  const [transactions, setTransactions] = useState<PaymentTransaction[]>(() => {
+    try {
+      const stored = localStorage.getItem('12rashi_transactions');
+      if (stored) return JSON.parse(stored);
+    } catch {}
+    return [
+      {
+        id: 'TXN12R-WELCOME',
+        amount: 100,
+        type: 'credit',
+        category: 'recharge',
+        method: 'PROMO',
+        description: '12Rashi Welcome Bonus & First Consultation Credit',
+        timestamp: 'Welcome Shagun',
+        status: 'SUCCESS',
+        balanceAfter: 100,
+      },
+    ];
+  });
 
   // Consultation
   const [activeConsultation, setActiveConsultation] = useState<AppContextType['activeConsultation']>(null);
@@ -447,18 +469,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [savedKundlis, setSavedKundlis] = useState<KundliData[]>([]);
   const [currentKundli, setCurrentKundli] = useState<KundliData | null>(null);
 
-  // Initialize default Kundli
+  // Initialize default Kundli only if user has birth details
   useEffect(() => {
-    const defaultK = calculateKundli(
-      userProfile.name,
-      userProfile.gender,
-      userProfile.dob,
-      userProfile.tob,
-      userProfile.pob
-    );
-    setCurrentKundli(defaultK);
-    setSavedKundlis([defaultK]);
-  }, []);
+    if (userProfile.name && userProfile.dob && userProfile.pob) {
+      const defaultK = calculateKundli(
+        userProfile.name,
+        userProfile.gender,
+        userProfile.dob,
+        userProfile.tob || '12:00',
+        userProfile.pob
+      );
+      setCurrentKundli(defaultK);
+      setSavedKundlis([defaultK]);
+    }
+  }, [userProfile.name, userProfile.gender, userProfile.dob, userProfile.tob, userProfile.pob]);
 
   // Theme & Language
   const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -547,7 +571,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } catch {}
     return INITIAL_FAMILY_PROFILES.slice(0, 10);
   });
-  const [activeFamilyProfile, setActiveFamilyProfile] = useState<FamilyProfile>(familyProfiles[0] || INITIAL_FAMILY_PROFILES[0]);
+  const [activeFamilyProfile, setActiveFamilyProfile] = useState<FamilyProfile | null>(() => {
+    try {
+      const stored = localStorage.getItem('12rashi_family_vault');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed[0];
+        }
+      }
+    } catch {}
+    return null;
+  });
   const [scheduledBookings, setScheduledBookings] = useState<ScheduledBooking[]>(() => {
     try {
       const saved = localStorage.getItem('12rashi_scheduled_bookings');
@@ -575,11 +610,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (saved) return JSON.parse(saved);
     } catch {}
     return {
-      enabled: true,
+      enabled: false,
       timeSlot: '06:30',
-      targetRashi: 'Leo (Simha)',
-      whatsappAlerts: true,
-      whatsappPhone: '+91 9831039814',
+      targetRashi: '',
+      whatsappAlerts: false,
+      whatsappPhone: '',
       browserPushAllowed: false,
       subscriptionPlan: 'trial',
       trialDaysLeft: 7,
@@ -591,7 +626,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [panchangCity, setPanchangCity] = useState<string>('Kolkata');
   const [transitNudges] = useState<TransitNudge[]>(PERSONALIZED_TRANSIT_NUDGES);
   const [consultationArchive, setConsultationArchive] = useState<ConsultationArchiveRecord[]>(INITIAL_CONSULTATION_ARCHIVE);
-  const [membershipTier, setMembershipTier] = useState<'free' | 'silver' | 'gold' | 'platinum'>('gold');
+  const [membershipTier, setMembershipTier] = useState<'free' | 'silver' | 'gold' | 'platinum'>('free');
 
   // Lentlo Dialog Controls
   const [openFamilyModal, setOpenFamilyModal] = useState<boolean>(false);
@@ -715,6 +750,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     setUser(currentUserData);
+    setUserProfile((prev) => {
+      const updated = {
+        ...prev,
+        name: currentUserData.name || prev.name,
+        phone: currentUserData.phone || prev.phone,
+        rashi: currentUserData.rashi || prev.rashi,
+        gender: currentUserData.gender || prev.gender,
+        dob: currentUserData.dob || prev.dob,
+        tob: currentUserData.tob || prev.tob,
+        pob: currentUserData.pob || prev.pob,
+      };
+      try {
+        localStorage.setItem('12rashi_user_profile', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
     try {
       localStorage.setItem('12rashi_user', JSON.stringify(currentUserData));
     } catch {}
@@ -935,7 +986,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const updatedList = familyProfiles.map((p) => (p.id === id ? { ...p, ...data } : p));
     setFamilyProfiles(updatedList);
     const updatedOne = updatedList.find((p) => p.id === id);
-    if (updatedOne && activeFamilyProfile.id === id) {
+    if (updatedOne && activeFamilyProfile?.id === id) {
       setActiveFamilyProfile(updatedOne);
     }
     try {
@@ -950,8 +1001,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const deleteFamilyProfile = (id: string) => {
     const updatedList = familyProfiles.filter((p) => p.id !== id);
     setFamilyProfiles(updatedList);
-    if (activeFamilyProfile.id === id && updatedList.length > 0) {
-      setActiveFamilyProfile(updatedList[0]);
+    if (activeFamilyProfile?.id === id) {
+      setActiveFamilyProfile(updatedList[0] || null);
     }
     try {
       localStorage.setItem('12rashi_family_vault', JSON.stringify(updatedList));

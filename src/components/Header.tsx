@@ -282,7 +282,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             >
               <Users className="w-3.5 h-3.5 text-orange-500" />
               <span className="font-bold text-stone-800 dark:text-stone-200 max-w-[110px] truncate">
-                {activeFamilyProfile.name.split(' ')[0]} ({activeFamilyProfile.relation})
+                {activeFamilyProfile?.name ? `${activeFamilyProfile.name.split(' ')[0]} (${activeFamilyProfile.relation})` : 'Family Vault'}
               </span>
               <ChevronDown className="w-3 h-3 text-stone-400" />
             </button>

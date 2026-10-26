@@ -87,64 +87,74 @@ export const FamilyProfilesModal: React.FC = () => {
 
           {/* Existing Profiles List */}
           <div className="space-y-2.5">
-            {familyProfiles.map((p) => {
-              const isActive = activeFamilyProfile?.id === p.id;
-              return (
-                <div
-                  key={p.id}
-                  className={`p-3.5 rounded-2xl border transition flex items-center justify-between ${
-                    isActive
-                      ? 'border-orange-500 bg-orange-50/70 dark:bg-orange-950/40 ring-1 ring-orange-500'
-                      : 'border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 hover:bg-stone-50'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 text-white font-bold flex items-center justify-center shrink-0 text-sm shadow-xs">
-                      {p.name.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-stone-900 dark:text-stone-100 text-sm">{p.name}</span>
-                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300">
-                          {p.relation}
-                        </span>
-                        {isActive && (
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-                            ACTIVE CHART
+            {familyProfiles.length === 0 ? (
+              <div className="p-6 text-center rounded-2xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200 dark:border-stone-700/60 space-y-2">
+                <Users className="w-8 h-8 text-stone-400 mx-auto" />
+                <p className="font-bold text-stone-800 dark:text-stone-200">No family charts saved yet</p>
+                <p className="text-stone-500 text-[11px] max-w-xs mx-auto">
+                  Add charts for your spouse, children, or parents to easily switch between Kundlis during live consultations.
+                </p>
+              </div>
+            ) : (
+              familyProfiles.map((p) => {
+                const isActive = activeFamilyProfile?.id === p.id;
+                return (
+                  <div
+                    key={p.id}
+                    className={`p-3.5 rounded-2xl border transition flex items-center justify-between ${
+                      isActive
+                        ? 'border-orange-500 bg-orange-50/70 dark:bg-orange-950/40 ring-1 ring-orange-500'
+                        : 'border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 hover:bg-stone-50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 text-white font-bold flex items-center justify-center shrink-0 text-sm shadow-xs">
+                        {p.name.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-stone-900 dark:text-stone-100 text-sm">{p.name}</span>
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300">
+                            {p.relation}
                           </span>
-                        )}
-                      </div>
-                      <div className="text-[11px] text-stone-500 mt-0.5">
-                        {p.dob} • {p.tob} • {p.rashi}
+                          {isActive && (
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                              ACTIVE CHART
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-[11px] text-stone-500 mt-0.5">
+                          {p.dob} • {p.tob} • {p.rashi}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-1.5">
-                    {!isActive && (
-                      <button
-                        onClick={() => {
-                          setActiveFamilyProfile(p);
-                          setOpenFamilyModal(false);
-                        }}
-                        className="py-1 px-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs cursor-pointer shadow-xs transition"
-                      >
-                        Select
-                      </button>
-                    )}
-                    {familyProfiles.length > 1 && !p.isPrimary && (
-                      <button
-                        onClick={() => deleteFamilyProfile(p.id)}
-                        className="p-1.5 rounded-lg text-stone-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer"
-                        title="Delete Profile"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      {!isActive && (
+                        <button
+                          onClick={() => {
+                            setActiveFamilyProfile(p);
+                            setOpenFamilyModal(false);
+                          }}
+                          className="py-1 px-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs cursor-pointer shadow-xs transition"
+                        >
+                          Select
+                        </button>
+                      )}
+                      {familyProfiles.length > 1 && !p.isPrimary && (
+                        <button
+                          onClick={() => deleteFamilyProfile(p.id)}
+                          className="p-1.5 rounded-lg text-stone-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer"
+                          title="Delete Profile"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
 
           {/* Add Profile Form */}

@@ -73,8 +73,8 @@ export const LiveChatModal: React.FC = () => {
     // Initialize session on server
     liveChatSyncService.initSession({
       channelId,
-      clientName: userProfile.name,
-      clientRashi: userProfile.rashi,
+      clientName: userProfile.name || 'Seeker',
+      clientRashi: userProfile.rashi || 'Vedic Seeker',
       astrologerId: activeConsultation.astrologer.id,
       astrologerName: activeConsultation.astrologer.name,
       role: 'user',
@@ -127,7 +127,7 @@ export const LiveChatModal: React.FC = () => {
     await liveChatSyncService.sendMessage({
       channelId,
       sender: 'user',
-      senderName: userProfile.name,
+      senderName: userProfile.name || 'Seeker',
       text: textToSend,
     });
 

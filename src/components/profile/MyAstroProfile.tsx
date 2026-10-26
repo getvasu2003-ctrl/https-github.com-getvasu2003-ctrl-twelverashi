@@ -82,13 +82,13 @@ export const MyAstroProfile: React.FC<MyAstroProfileProps> = ({
   const [isPlayingMantra, setIsPlayingMantra] = useState<boolean>(false);
 
   // Form states initialized with user or userProfile data
-  const [name, setName] = useState<string>(user?.name || userProfile?.name || 'Astro Seeker');
+  const [name, setName] = useState<string>(user?.name || userProfile?.name || '');
   const [gender, setGender] = useState<'male' | 'female' | 'other'>(
     (user?.gender as any) || (userProfile?.gender?.toLowerCase() as any) || 'male'
   );
-  const [dob, setDob] = useState<string>(user?.dob || userProfile?.dob || '1995-08-15');
-  const [tob, setTob] = useState<string>(user?.tob || userProfile?.tob || '10:30');
-  const [pob, setPob] = useState<string>(user?.pob || userProfile?.pob || 'Varanasi, Uttar Pradesh');
+  const [dob, setDob] = useState<string>(user?.dob || userProfile?.dob || '');
+  const [tob, setTob] = useState<string>(user?.tob || userProfile?.tob || '12:00');
+  const [pob, setPob] = useState<string>(user?.pob || userProfile?.pob || '');
 
   const [activeSummary, setActiveSummary] = useState<KundliSummary | null>(existingSummary);
 
