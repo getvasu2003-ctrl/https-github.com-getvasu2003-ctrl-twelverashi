@@ -244,6 +244,7 @@ interface AppContextType {
     tob: string;
     pob: string;
   }) => Promise<KundliSummary>;
+  refreshApp: (hardReset?: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
