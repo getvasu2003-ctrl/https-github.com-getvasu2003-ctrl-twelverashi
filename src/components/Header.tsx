@@ -27,6 +27,7 @@ import {
   Smartphone,
   Zap,
   Gift,
+  RotateCw,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -64,6 +65,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
     setOpenLoginModal,
     setOpenTatkalModal,
     setOpenOnboardingModal,
+    refreshApp,
   } = useApp();
 
   const { t } = useTranslation();
@@ -71,6 +73,14 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
   const [showNotifDrawer, setShowNotifDrawer] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = (hardReset = false) => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      refreshApp(hardReset);
+    }, 350);
+  };
 
   const unreadNotifs = notifications.filter((n) => !n.read).length;
 
@@ -148,6 +158,16 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             >
               <Sparkles className="w-3 h-3 text-amber-300" />
               <span>Tour</span>
+            </button>
+
+            {/* Quick App Refresh & Sync */}
+            <button
+              onClick={() => handleRefresh(false)}
+              className="inline-flex items-center gap-1 bg-white/20 hover:bg-white/30 text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full cursor-pointer transition border border-white/30 shadow-2xs"
+              title="Refresh App & Sync Live Data (Purges cached demo data)"
+            >
+              <RotateCw className={`w-3 h-3 text-amber-200 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <span>Refresh</span>
             </button>
 
 
@@ -326,18 +346,30 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
 
           {/* User Wallet Balance */}
           {role === 'user' && (
-            <div className="flex items-center bg-orange-50/70 dark:bg-stone-900 border border-orange-300 dark:border-stone-700 rounded-full pl-2.5 pr-1 py-1">
-              <div className="flex items-center gap-1 text-xs font-bold text-stone-800 dark:text-stone-100">
-                <Wallet className="w-3.5 h-3.5 text-orange-600" />
-                <span>₹{walletBalance}</span>
+            <div className="flex items-center gap-1.5">
+              <div className="flex items-center bg-orange-50/70 dark:bg-stone-900 border border-orange-300 dark:border-stone-700 rounded-full pl-2.5 pr-1 py-1">
+                <div className="flex items-center gap-1 text-xs font-bold text-stone-800 dark:text-stone-100">
+                  <Wallet className="w-3.5 h-3.5 text-orange-600" />
+                  <span>₹{walletBalance}</span>
+                </div>
+                <button
+                  onClick={() => setOpenPaymentModal(true)}
+                  className="ml-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full cursor-pointer transition shadow-xs flex items-center gap-0.5"
+                  title="Recharge wallet using UPI, QR Code or NetBanking"
+                >
+                  <PlusCircle className="w-3 h-3" />
+                  <span>Add</span>
+                </button>
               </div>
+
+              {/* Refresh / Sync Button right by wallet */}
               <button
-                onClick={() => setOpenPaymentModal(true)}
-                className="ml-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full cursor-pointer transition shadow-xs flex items-center gap-0.5"
-                title="Recharge wallet using UPI, QR Code or NetBanking"
+                onClick={() => handleRefresh(false)}
+                className="p-1.5 rounded-full border border-orange-200 dark:border-stone-700 bg-orange-50/80 dark:bg-stone-900 text-stone-700 dark:text-stone-300 hover:text-orange-600 hover:bg-orange-100 dark:hover:bg-stone-800 cursor-pointer transition shadow-2xs"
+                title="Refresh App & Sync Live Data"
+                aria-label="Refresh App"
               >
-                <PlusCircle className="w-3 h-3" />
-                <span>Add</span>
+                <RotateCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-orange-600' : ''}`} />
               </button>
             </div>
           )}
@@ -547,6 +579,19 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
               <span>Take Interactive Platform Tour (Intro to Kundli, Pandits, Rashi Fal)</span>
+            </button>
+
+            {/* Mobile Refresh Button */}
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                handleRefresh(false);
+              }}
+              className="p-2 rounded-xl bg-orange-100 dark:bg-stone-800 border border-orange-300 dark:border-stone-700 text-orange-900 dark:text-orange-200 font-bold flex items-center justify-center gap-1.5 cursor-pointer col-span-2 text-xs"
+              title="Refresh App & Sync Live Data"
+            >
+              <RotateCw className={`w-3.5 h-3.5 text-orange-600 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <span>Refresh App & Sync Live Data</span>
             </button>
           </div>
 

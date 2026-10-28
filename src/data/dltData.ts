@@ -15,6 +15,7 @@ export interface TelecomGatewayConfig {
     service: string;
   };
   msg91Config: {
+    authKey: string;
     templateId: string;
     senderId: string;
     route: string;
@@ -30,8 +31,8 @@ export interface TelecomGatewayConfig {
 }
 
 export const DLT_CONFIG: TelecomGatewayConfig = {
-  telecomOperator: 'Reliance Jio Infocomm Ltd (Jio DLT - TrueConnect)',
-  entityName: '12RASHIINFOTECH',
+  telecomOperator: 'Reliance Jio DLT / MSG91',
+  entityName: '12RASHINFOTECH',
   principalEntityId: '1201171886368224321',
   registeredAddress: 'Laxman Apartment, 3rd Floor, Pulin Khatick Road, Kolkata - 700015, West Bengal, India',
   contactNumber: '9831049814',
@@ -44,6 +45,7 @@ export const DLT_CONFIG: TelecomGatewayConfig = {
     service: 'TWRSHI',
   },
   msg91Config: {
+    authKey: '418062AMd6Ybkr3q6935b9aaP1',
     templateId: '6935bfc0a6240e24e80be279',
     senderId: 'TWRSHI',
     route: 'v5/otp',

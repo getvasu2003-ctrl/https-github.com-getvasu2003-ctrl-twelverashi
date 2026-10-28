@@ -37,7 +37,9 @@ const AGORA_APP_CERTIFICATE = process.env.AGORA_APP_CERTIFICATE || '';
 const HAS_AGORA_CONFIG = Boolean(AGORA_APP_ID && !AGORA_APP_ID.includes('YOUR_'));
 
 // MSG91 Telecom & OTP Gateway Configuration
-const MSG91_AUTH_KEY = process.env.MSG91_AUTH_KEY || '';
+const MSG91_AUTH_KEY = (process.env.MSG91_AUTH_KEY && !process.env.MSG91_AUTH_KEY.includes('YOUR_'))
+  ? process.env.MSG91_AUTH_KEY
+  : '418062AMd6Ybkr3q6935b9aaP1';
 
 // Cashfree Payment Gateway Configuration
 const CASHFREE_APP_ID = process.env.CASHFREE_APP_ID || '';

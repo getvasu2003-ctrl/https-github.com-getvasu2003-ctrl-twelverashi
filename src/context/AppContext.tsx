@@ -435,32 +435,33 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     timestamp: number;
   } | null>(null);
 
-  // Wallet
+  // Wallet: Real seekers start with ₹0 balance until recharged via Cashfree PG
   const [walletBalance, setWalletBalance] = useState<number>(() => {
     try {
       const stored = localStorage.getItem('12rashi_wallet_balance');
-      if (stored !== null) return Number(stored);
+      // Purge any stale legacy demo balances (e.g. 100 or 450)
+      if (stored === '100' || stored === '450') {
+        localStorage.setItem('12rashi_wallet_balance', '0');
+        return 0;
+      }
+      if (stored !== null && !isNaN(Number(stored))) {
+        return Math.max(0, Number(stored));
+      }
     } catch {}
-    return 100; // ₹100 Welcome Shubh Shagun Bonus for first consultation
+    return 0; // Pure ₹0 default for real seekers
   });
   const [transactions, setTransactions] = useState<PaymentTransaction[]>(() => {
     try {
       const stored = localStorage.getItem('12rashi_transactions');
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          // Remove any legacy demo welcome credit
+          return parsed.filter((t) => t.id !== 'TXN12R-WELCOME' && t.id !== 'TXN12R-INIT');
+        }
+      }
     } catch {}
-    return [
-      {
-        id: 'TXN12R-WELCOME',
-        amount: 100,
-        type: 'credit',
-        category: 'recharge',
-        method: 'PROMO',
-        description: '12Rashi Welcome Bonus & First Consultation Credit',
-        timestamp: 'Welcome Shagun',
-        status: 'SUCCESS',
-        balanceAfter: 100,
-      },
-    ];
+    return [];
   });
 
   // Consultation
@@ -552,7 +553,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [user, setUser] = useState<UserAccount | null>(() => {
     try {
       const stored = localStorage.getItem('12rashi_user');
-      return stored ? JSON.parse(stored) : null;
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.walletBalance === 100 || parsed.walletBalance === 450) {
+          parsed.walletBalance = 0;
+          localStorage.setItem('12rashi_user', JSON.stringify(parsed));
+        }
+        return parsed;
+      }
+      return null;
     } catch {
       return null;
     }
@@ -742,8 +751,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         uid,
         phone: cleanPhone,
         name: name || 'Astro Seeker',
-        walletBalance: 100,
-        freeTrialClaimed: true,
+        walletBalance: 0,
+        freeTrialClaimed: false,
         createdAt: new Date().toISOString(),
         isVerified: true,
       };
@@ -1012,6 +1021,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       deleteFamilyProfileFromFirestore(user.uid, id).catch(() => {});
     }
     addNotification('Profile Removed', 'Family Kundli profile removed from vault.', 'transit');
+  };
+
+  const refreshApp = (hardReset = false) => {
+    try {
+      localStorage.removeItem('12rashi_wallet_balance');
+      localStorage.removeItem('12rashi_transactions');
+      if (hardReset) {
+        localStorage.removeItem('12rashi_family_vault');
+        localStorage.removeItem('12rashi_guest_kundli_summary');
+        localStorage.removeItem('12rashi_guest_birth_details');
+      }
+      const stored = localStorage.getItem('12rashi_user');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.walletBalance === 100 || parsed.walletBalance === 450) {
+          parsed.walletBalance = 0;
+          localStorage.setItem('12rashi_user', JSON.stringify(parsed));
+        }
+      }
+    } catch {}
+    setWalletBalance(0);
+    setTransactions([]);
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
   };
 
   const addScheduledBooking = (b: Omit<ScheduledBooking, 'id' | 'bookedAt' | 'status'>) => {
@@ -1917,6 +1951,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         openAstroProfileModal,
         setOpenAstroProfileModal,
         saveAstroProfile,
+        refreshApp,
       }}
     >
       {children}
