@@ -51,5 +51,33 @@ export default defineConfig(() => {
         'Cache-Control': 'no-store, no-cache, must-revalidate',
       },
     },
+    build: {
+      outDir: 'dist',
+      chunkSizeWarningLimit: 1500,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'vendor-react';
+              }
+              if (id.includes('lucide-react')) {
+                return 'vendor-icons';
+              }
+              if (id.includes('firebase')) {
+                return 'vendor-firebase';
+              }
+              if (id.includes('agora-rtc') || id.includes('agora-token')) {
+                return 'vendor-agora';
+              }
+              if (id.includes('@google/genai')) {
+                return 'vendor-genai';
+              }
+              return 'vendor-libs';
+            }
+          },
+        },
+      },
+    },
   };
 });

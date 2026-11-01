@@ -133,6 +133,9 @@ interface AppContextType {
   // UI Dialog Controls
   openPaymentModal: boolean;
   setOpenPaymentModal: (open: boolean) => void;
+  paymentModalTab: 'recharge' | 'history' | 'subscription';
+  setPaymentModalTab: (tab: 'recharge' | 'history' | 'subscription') => void;
+  openWalletModal: (tab?: 'recharge' | 'history' | 'subscription') => void;
   openDltModal: boolean;
   setOpenDltModal: (open: boolean) => void;
   openLuckyWheel: boolean;
@@ -464,6 +467,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return [];
   });
 
+  const recordTransaction = (txn: PaymentTransaction) => {
+    setTransactions((prev) => {
+      const updated = [txn, ...prev];
+      try {
+        localStorage.setItem('12rashi_transactions', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
+  };
+
   // Consultation
   const [activeConsultation, setActiveConsultation] = useState<AppContextType['activeConsultation']>(null);
 
@@ -545,6 +558,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Modal dialog states
   const [openPaymentModal, setOpenPaymentModal] = useState<boolean>(false);
+  const [paymentModalTab, setPaymentModalTab] = useState<'recharge' | 'history' | 'subscription'>('recharge');
+  const openWalletModal = (tab: 'recharge' | 'history' | 'subscription' = 'recharge') => {
+    setPaymentModalTab(tab);
+    setOpenPaymentModal(true);
+  };
   const [openDltModal, setOpenDltModal] = useState<boolean>(false);
   const [openLuckyWheel, setOpenLuckyWheel] = useState<boolean>(false);
   const [openLiveStream, setOpenLiveStream] = useState<boolean>(false);
@@ -1062,7 +1080,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } catch {}
       return updated;
     });
-    setWalletBalance((prev) => Math.max(0, prev - b.price));
+
+    const newBal = Math.max(0, walletBalance - b.price);
+    setWalletBalance(newBal);
+
+    recordTransaction({
+      id: 'TXN12R' + Date.now().toString(36).toUpperCase(),
+      amount: b.price,
+      type: 'debit',
+      category: 'consultation',
+      method: 'Wallet',
+      description: `Slot Booking: ${b.durationMins}-min ${b.type.toUpperCase()} with ${b.astrologerName} on ${b.date}`,
+      timestamp: 'Just now',
+      status: 'SUCCESS',
+      balanceAfter: newBal,
+    });
+
     addNotification('Slot Confirmed!', `Booked ${b.durationMins}-min ${b.type} session with ${b.astrologerName} on ${b.date} at ${b.timeSlot}. WhatsApp reminder scheduled.`, 'muhurat');
 
     // Trigger instant device native push notification
@@ -1072,7 +1105,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const cancelScheduledBooking = (id: string) => {
     const b = scheduledBookings.find((s) => s.id === id);
     if (b) {
-      setWalletBalance((prev) => prev + b.price);
+      const newBal = walletBalance + b.price;
+      setWalletBalance(newBal);
       setScheduledBookings((prev) => {
         const updated = prev.filter((s) => s.id !== id);
         try {
@@ -1080,6 +1114,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         } catch {}
         return updated;
       });
+
+      recordTransaction({
+        id: 'TXN12R' + Date.now().toString(36).toUpperCase(),
+        amount: b.price,
+        type: 'credit',
+        category: 'consultation',
+        method: 'Wallet',
+        description: `Booking Refund: Cancelled ${b.durationMins}-min session with ${b.astrologerName}`,
+        timestamp: 'Just now',
+        status: 'SUCCESS',
+        balanceAfter: newBal,
+      });
+
       addNotification('Booking Cancelled & Refunded', `₹${b.price} has been refunded to your wallet for slot on ${b.date}.`, 'discount');
     }
   };
@@ -1098,7 +1145,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } catch {}
       return updated;
     });
-    setWalletBalance((prev) => Math.max(0, prev - q.price));
+
+    const newBal = Math.max(0, walletBalance - q.price);
+    setWalletBalance(newBal);
+
+    recordTransaction({
+      id: 'TXN12R' + Date.now().toString(36).toUpperCase(),
+      amount: q.price,
+      type: 'debit',
+      category: 'consultation',
+      method: 'Wallet',
+      description: `Ask Pandit (Voice Q&A): Question for ${q.assignedAstrologer}`,
+      timestamp: 'Just now',
+      status: 'SUCCESS',
+      balanceAfter: newBal,
+    });
+
     addNotification('Question Submitted', `Your question has been assigned to ${q.assignedAstrologer}. Verified answer guaranteed within 24 hours.`, 'astrologer');
   };
 
@@ -1462,7 +1524,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       balanceAfter: newBal,
     };
 
-    setTransactions((prev) => [newTxn, ...prev]);
+    recordTransaction(newTxn);
     firestoreSyncService.logWalletTransaction(userProfile.phone, {
       amount: totalCredit,
       type: 'credit',
@@ -1489,6 +1551,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const deductWallet = (amount: number, description: string): boolean => {
     if (walletBalance < amount) {
+      setPaymentModalTab('recharge');
       setOpenPaymentModal(true);
       return false;
     }
@@ -1507,7 +1570,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       status: 'SUCCESS',
       balanceAfter: newBal,
     };
-    setTransactions((prev) => [newTxn, ...prev]);
+    recordTransaction(newTxn);
     firestoreSyncService.logWalletTransaction(userProfile.phone, {
       amount: amount,
       type: 'debit',
@@ -1573,7 +1636,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isRefunded = true;
         refundReason = 'Fair-Billing Guarantee: Disconnected under 60s (Auto-Refunded to wallet)';
         if (totalDeducted > 0) {
-          setWalletBalance((b) => b + totalDeducted);
+          const restoredBal = walletBalance + totalDeducted;
+          setWalletBalance(restoredBal);
+          recordTransaction({
+            id: 'TXN12R' + Date.now().toString(36).toUpperCase(),
+            amount: totalDeducted,
+            type: 'credit',
+            category: 'consultation',
+            method: 'Wallet',
+            description: `Fair-Billing Guarantee Auto-Refund: Session under 60s (${astrologer.name})`,
+            timestamp: 'Just now',
+            status: 'SUCCESS',
+            balanceAfter: restoredBal,
+          });
         }
         finalCost = 0;
         addNotification(
@@ -1708,7 +1783,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             : prev.astrologer.videoRate;
 
           if (walletBalance >= rate) {
-            setWalletBalance((b) => b - rate);
+            const nextBal = walletBalance - rate;
+            setWalletBalance(nextBal);
+            recordTransaction({
+              id: 'TXN12R' + Date.now().toString(36).toUpperCase(),
+              amount: rate,
+              type: 'debit',
+              category: 'consultation',
+              method: 'Wallet',
+              description: `Live ${prev.type.toUpperCase()} Consultation: ${prev.astrologer.name} (Min ${Math.round(newElapsed / 60)})`,
+              timestamp: 'Just now',
+              status: 'SUCCESS',
+              balanceAfter: nextBal,
+            });
             return {
               ...prev,
               elapsedSeconds: newElapsed,
@@ -1723,6 +1810,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               'Session ended due to low wallet balance. Please recharge wallet to reconnect with Acharyaji.',
               'payment'
             );
+            setPaymentModalTab('recharge');
             setOpenPaymentModal(true);
             return null;
           }
@@ -1863,6 +1951,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         sendConsultationReminderPush,
         openPaymentModal,
         setOpenPaymentModal,
+        paymentModalTab,
+        setPaymentModalTab,
+        openWalletModal,
         openDltModal,
         setOpenDltModal,
         openLuckyWheel,

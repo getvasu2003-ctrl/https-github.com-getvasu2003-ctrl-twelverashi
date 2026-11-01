@@ -1,4 +1,4 @@
-import { DLTTemplate } from '../types/astrology.ts';
+import type { DLTTemplate } from '../types/astrology.ts';
 
 export interface TelecomGatewayConfig {
   telecomOperator: string;

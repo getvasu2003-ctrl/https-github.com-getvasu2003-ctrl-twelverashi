@@ -19,7 +19,10 @@ import {
   RefreshCw,
   ArrowRight,
   ShieldAlert,
+  History,
+  PlusCircle,
 } from 'lucide-react';
+import { TransactionHistory } from './TransactionHistory.tsx';
 import {
   createCashfreeOrder,
   verifyCashfreePayment,
@@ -33,14 +36,28 @@ export const PaymentModal: React.FC = () => {
   const {
     openPaymentModal,
     setOpenPaymentModal,
+    paymentModalTab,
+    setPaymentModalTab,
     walletBalance,
+    transactions,
     rechargeWallet,
     userProfile,
     updateUserProfile,
     addNotification,
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'recharge' | 'subscription'>('recharge');
+  const [activeTab, setActiveTab] = useState<'recharge' | 'history' | 'subscription'>(paymentModalTab || 'recharge');
+
+  useEffect(() => {
+    if (paymentModalTab) {
+      setActiveTab(paymentModalTab);
+    }
+  }, [paymentModalTab, openPaymentModal]);
+
+  const handleTabSwitch = (tab: 'recharge' | 'history' | 'subscription') => {
+    setActiveTab(tab);
+    setPaymentModalTab(tab);
+  };
   const [selectedAmount, setSelectedAmount] = useState<number>(500);
   const [customAmount, setCustomAmount] = useState<string>('');
   const [isCustom, setIsCustom] = useState(false);
@@ -417,7 +434,7 @@ export const PaymentModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs">
-      <div className="bg-white dark:bg-stone-900 rounded-3xl w-full max-w-xl shadow-2xl border border-amber-300/80 dark:border-stone-700 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95">
+      <div className="bg-white dark:bg-stone-900 rounded-3xl w-full max-w-xl sm:max-w-2xl shadow-2xl border border-amber-300/80 dark:border-stone-700 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95">
         
         {/* Header with Cashfree Production Gateway Badge */}
         <div className="p-4 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-700 text-white flex items-center justify-between shrink-0 shadow-md">
@@ -575,22 +592,42 @@ export const PaymentModal: React.FC = () => {
               </div>
             )}
 
-            {/* Tabs: Wallet Recharge vs Subscriptions */}
-            <div className="flex bg-stone-100 dark:bg-stone-800 p-1 rounded-2xl">
+            {/* Tabs: Add Money vs Transaction History vs VIP Club Plans */}
+            <div className="flex bg-stone-100 dark:bg-stone-800 p-1 rounded-2xl gap-1">
               <button
                 type="button"
-                onClick={() => setActiveTab('recharge')}
-                className={`flex-1 py-2 text-xs font-bold rounded-xl transition cursor-pointer ${
+                onClick={() => handleTabSwitch('recharge')}
+                className={`flex-1 py-2 text-xs font-bold rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 ${
                   activeTab === 'recharge'
                     ? 'bg-orange-600 text-white shadow-xs'
                     : 'text-stone-600 dark:text-stone-300 hover:text-orange-500'
                 }`}
               >
-                Add Wallet Money
+                <PlusCircle className="w-3.5 h-3.5" />
+                <span>Add Money</span>
               </button>
+
               <button
                 type="button"
-                onClick={() => setActiveTab('subscription')}
+                onClick={() => handleTabSwitch('history')}
+                className={`flex-1 py-2 text-xs font-bold rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 ${
+                  activeTab === 'history'
+                    ? 'bg-orange-600 text-white shadow-xs'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-orange-500'
+                }`}
+              >
+                <History className="w-3.5 h-3.5" />
+                <span>History</span>
+                {transactions.length > 0 && (
+                  <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-extrabold ${activeTab === 'history' ? 'bg-white/25 text-white' : 'bg-orange-200 dark:bg-orange-950 text-orange-800 dark:text-orange-300'}`}>
+                    {transactions.length}
+                  </span>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleTabSwitch('subscription')}
                 className={`flex-1 py-2 text-xs font-bold rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 ${
                   activeTab === 'subscription'
                     ? 'bg-orange-600 text-white shadow-xs'
@@ -598,11 +635,13 @@ export const PaymentModal: React.FC = () => {
                 }`}
               >
                 <Crown className="w-3.5 h-3.5 text-amber-400" />
-                <span>12Rashi Club Plans</span>
+                <span>VIP Club</span>
               </button>
             </div>
 
-            {activeTab === 'recharge' ? (
+            {activeTab === 'history' ? (
+              <TransactionHistory onAddMoneyClick={() => handleTabSwitch('recharge')} />
+            ) : activeTab === 'recharge' ? (
               <div className="space-y-4">
                 
                 {/* Packs Selector */}

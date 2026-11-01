@@ -44,6 +44,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
     partnerAstrologer,
     walletBalance,
     setOpenPaymentModal,
+    openWalletModal,
     setOpenLuckyWheel,
     setOpenLiveStream,
     setOpenDltModal,
@@ -348,12 +349,16 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
           {role === 'user' && (
             <div className="flex items-center gap-1.5">
               <div className="flex items-center bg-orange-50/70 dark:bg-stone-900 border border-orange-300 dark:border-stone-700 rounded-full pl-2.5 pr-1 py-1">
-                <div className="flex items-center gap-1 text-xs font-bold text-stone-800 dark:text-stone-100">
+                <button
+                  onClick={() => openWalletModal('history')}
+                  className="flex items-center gap-1 text-xs font-bold text-stone-800 dark:text-stone-100 hover:text-orange-600 dark:hover:text-orange-400 cursor-pointer transition"
+                  title="View Transaction History & Balance Statement"
+                >
                   <Wallet className="w-3.5 h-3.5 text-orange-600" />
                   <span>₹{walletBalance}</span>
-                </div>
+                </button>
                 <button
-                  onClick={() => setOpenPaymentModal(true)}
+                  onClick={() => openWalletModal('recharge')}
                   className="ml-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full cursor-pointer transition shadow-xs flex items-center gap-0.5"
                   title="Recharge wallet using UPI, QR Code or NetBanking"
                 >
@@ -566,6 +571,17 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             >
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
               <span>Fair Billing</span>
+            </button>
+
+            <button
+              onClick={() => {
+                openWalletModal('history');
+                setMobileMenuOpen(false);
+              }}
+              className="p-2 rounded-xl bg-orange-50 dark:bg-stone-800 border border-orange-200 dark:border-stone-700 text-orange-900 dark:text-orange-200 font-bold flex items-center gap-1.5 cursor-pointer"
+            >
+              <Wallet className="w-3.5 h-3.5 text-orange-600" />
+              <span>Wallet History (₹{walletBalance})</span>
             </button>
 
 
