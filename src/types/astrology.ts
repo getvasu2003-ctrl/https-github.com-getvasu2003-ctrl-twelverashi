@@ -16,7 +16,21 @@ export type AstrologerSpecialty =
   | 'Financial & Stock Market'
   | 'Gemology & Lal Kitab'
   | 'Marriage & Manglik Dosha'
-  | 'Child & Higher Education';
+  | 'Child & Higher Education'
+  | 'Govt Job & Civil Services'
+  | 'Business & Startups'
+  | 'Crypto & Day Trading'
+  | 'Fertility & Childbirth'
+  | 'Foreign Travel & PR'
+  | 'Shani & Sade Sati'
+  | 'Spiritual & Protection'
+  | 'Rudraksha & Sacred Beads'
+  | 'Angel & Akashic Divination'
+  | 'Jaimini & Chara Dasha'
+  | 'Ashtakavarga Precision'
+  | 'Western & Psychological'
+  | 'Breakup & Reconnection';
+
 
 export interface AstrologerRemedyPrescription {
   title: string;
