@@ -75,7 +75,7 @@ export const LegalComplianceModal: React.FC = () => {
                 Legal & Regulatory Compliance Center
               </h3>
               <p className="text-[11px] text-stone-300">
-                12Rashi Astrological Services Pvt. Ltd. • IT Rules 2021 & TRAI TCCCPR Compliant
+                12Rashi Astrology (Sole Proprietorship: 12rashi Infotech) • IT Rules 2021 & TRAI TCCCPR Compliant
               </p>
             </div>
           </div>
@@ -138,16 +138,16 @@ export const LegalComplianceModal: React.FC = () => {
 
               <div className="space-y-2.5 bg-stone-50 dark:bg-stone-800/60 p-4 rounded-2xl border border-stone-200 dark:border-stone-700">
                 <p>
-                  <strong>1. Nature of Astrological Services:</strong> All horoscopes, Janam Kundli charts, planetary transit predictions, Guna Milan compatibility scores, gemstone recommendations, and astrologer consultations provided on <strong>12Rashi</strong> are based on traditional Vedic Jyotish, Parashari, Jaimini, KP, and Lal Kitab principles. These calculations represent an interpretive spiritual science.
+                  <strong>1. Nature of Astrological Services:</strong> All horoscopes, Janam Kundli charts, planetary transit predictions, Guna Milan compatibility scores, gemstone recommendations, and astrologer consultations provided on <strong>12Rashi Astrology</strong> (operated under the sole proprietorship of <strong>12rashi Infotech</strong>) are based on traditional Vedic Jyotish, Parashari, Jaimini, KP, and Lal Kitab principles. These calculations represent an interpretive spiritual science.
                 </p>
                 <p>
                   <strong>2. Not Medical, Legal, or Financial Advice:</strong> Consultations and AI insights are intended strictly for guidance, spiritual advisory, and self-reflection. Under no circumstances should astrological predictions substitute for qualified professional medical treatment, clinical psychiatric diagnosis, legal counsel, or certified investment/financial advisory.
                 </p>
                 <p>
-                  <strong>3. No Guarantees or Warranties:</strong> Vedic philosophy honors individual <em>Karma</em>, human free will, and divine intervention. Consequently, 12Rashi and its affiliated astrologers do not warrant, guarantee, or claim 100% accuracy of future outcomes, health results, or relationship success.
+                  <strong>3. No Guarantees or Warranties:</strong> Vedic philosophy honors individual <em>Karma</em>, human free will, and divine intervention. Consequently, 12Rashi Astrology and its affiliated astrologers do not warrant, guarantee, or claim 100% accuracy of future outcomes, health results, or relationship success.
                 </p>
                 <p>
-                  <strong>4. Anti-Black Magic / Zero Fear-Mongering Policy:</strong> 12Rashi strictly bans all unethical practices, black magic, or fear-inducing extortion. Our verified astrologers adhere to a strict Vedic Code of Ethics.
+                  <strong>4. Anti-Black Magic / Zero Fear-Mongering Policy:</strong> 12Rashi Astrology strictly bans all unethical practices, black magic, or fear-inducing extortion. Our verified astrologers adhere to a strict Vedic Code of Ethics.
                 </p>
               </div>
             </div>
@@ -176,8 +176,13 @@ export const LegalComplianceModal: React.FC = () => {
                   </div>
 
                   <div>
-                    <span className="text-stone-400 block text-[10px] uppercase">Corporate Legal Entity:</span>
-                    <span className="font-semibold text-stone-800 dark:text-stone-200">12RASHIINFOTECH / 12Rashi Astrological Services Pvt. Ltd.</span>
+                    <span className="text-stone-400 block text-[10px] uppercase">Brand & Trade Name:</span>
+                    <span className="font-bold text-orange-600 dark:text-orange-400 text-sm">12Rashi Astrology</span>
+                  </div>
+
+                  <div>
+                    <span className="text-stone-400 block text-[10px] uppercase">Sole Proprietorship Entity:</span>
+                    <span className="font-semibold text-stone-800 dark:text-stone-200">12rashi Infotech (DLT: 12RASHIINFOTECH)</span>
                   </div>
 
                   <div>
@@ -189,7 +194,7 @@ export const LegalComplianceModal: React.FC = () => {
 
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase">Helpline & Direct Phone:</span>
-                    <span className="font-mono font-bold text-stone-900 dark:text-stone-100">+91 9831049814</span>
+                    <span className="font-mono font-bold text-stone-900 dark:text-stone-100">+91 9831039814</span>
                   </div>
                 </div>
 
@@ -222,10 +227,13 @@ export const LegalComplianceModal: React.FC = () => {
                   Data Protection & Privacy Policy
                 </h4>
                 <p>
+                  <strong>Brand & Entity:</strong> <strong>12Rashi Astrology</strong> is operated under the sole proprietorship of <strong>12rashi Infotech</strong>.
+                </p>
+                <p>
                   <strong>Data Collected:</strong> We collect your Name, Date of Birth, Exact Time of Birth, Place of Birth, and Mobile Number for DLT OTP verification. This data is exclusively utilized to calculate planetary ephemeris, Lagna charts, and Dasha cycles.
                 </p>
                 <p>
-                  <strong>Payment Security (Cashfree):</strong> Payments are processed via RBI-authorized <strong>Cashfree Payments India</strong> using 256-bit TLS bank encryption. 12Rashi does not store credit/debit card numbers, CVVs, or UPI MPINs on our servers.
+                  <strong>Payment Security (Cashfree):</strong> Payments are processed via RBI-authorized <strong>Cashfree Payments India</strong> using 256-bit TLS bank encryption. 12Rashi Astrology does not store credit/debit card numbers, CVVs, or UPI MPINs on our servers.
                 </p>
                 <p>
                   <strong>No Data Selling:</strong> We never sell, rent, or trade your personal birth charts or consultation transcripts to advertising networks or third-party brokers.
@@ -243,10 +251,13 @@ export const LegalComplianceModal: React.FC = () => {
               <div className="bg-stone-50 dark:bg-stone-800/60 p-4 rounded-2xl border border-stone-200 dark:border-stone-700 space-y-2.5">
                 <h4 className="font-bold text-stone-900 dark:text-stone-100 text-xs uppercase flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Fair-Billing Guarantee™ & Consultation Terms</span>
+                  <span>12Rashi Astrology Fair-Billing Guarantee™ & Terms</span>
                 </h4>
                 <p>
-                  <strong>Per-Second Metering:</strong> Unlike conventional platforms that round up a 61-second call to 2 full minutes, 12Rashi bills strictly per second (e.g. ₹30/min = ₹0.50/second).
+                  <strong>Entity:</strong> Services are offered under the brand <strong>12Rashi Astrology</strong>, a sole proprietorship of <strong>12rashi Infotech</strong>.
+                </p>
+                <p>
+                  <strong>Per-Second Metering:</strong> Unlike conventional platforms that round up a 61-second call to 2 full minutes, 12Rashi Astrology bills strictly per second (e.g. ₹30/min = ₹0.50/second).
                 </p>
                 <p>
                   <strong>1st-Minute 100% Refund Guarantee:</strong> If an audio or video consultation disconnects or you are unsatisfied within the first 60 seconds, your wallet is automatically refunded 100% with zero questions asked.

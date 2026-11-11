@@ -234,9 +234,16 @@ export const DltSmsModal: React.FC = () => {
               </div>
 
               <div className="bg-white/70 dark:bg-stone-800/80 p-2.5 rounded-xl border border-stone-200 dark:border-stone-700">
-                <span className="text-stone-400 block text-[10px] uppercase">Registered Entity Name:</span>
+                <span className="text-stone-400 block text-[10px] uppercase">Brand & Trade Name:</span>
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-stone-900 dark:text-stone-100">{DLT_CONFIG.entityName}</span>
+                  <span className="font-bold text-orange-600 dark:text-orange-400">12Rashi Astrology</span>
+                </div>
+              </div>
+
+              <div className="bg-white/70 dark:bg-stone-800/80 p-2.5 rounded-xl border border-stone-200 dark:border-stone-700">
+                <span className="text-stone-400 block text-[10px] uppercase">Sole Proprietorship / DLT Entity:</span>
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-stone-900 dark:text-stone-100">12rashi Infotech ({DLT_CONFIG.entityName})</span>
                   <button
                     onClick={() => copyToClipboard(DLT_CONFIG.entityName, 'entity_name')}
                     className="p-1 hover:bg-stone-100 dark:hover:bg-stone-700 rounded text-stone-500"

@@ -87,9 +87,10 @@ export const Logo: React.FC<LogoProps> = ({
 
       {/* Brand Typography */}
       <div className="flex flex-col">
-        <div className="flex items-center gap-1 leading-none">
+        <div className="flex items-center gap-1.5 leading-none">
           <span className={`font-serif tracking-tight font-extrabold text-stone-900 dark:text-stone-50 ${textSize}`}>
             12<span className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 bg-clip-text text-transparent">Rashi</span>
+            <span className="text-amber-600 dark:text-amber-400 font-serif font-black ml-1 text-[0.8em]">Astrology</span>
           </span>
           <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold tracking-wider uppercase scale-90 shadow-xs">
             Live
@@ -97,7 +98,7 @@ export const Logo: React.FC<LogoProps> = ({
         </div>
         {showTagline && (
           <span className="text-[10px] font-bold tracking-widest text-orange-600 dark:text-orange-400/90 uppercase mt-0.5">
-            Vedic Jyotish & Kundli
+            Vedic Jyotish & Kundli • 12rashi Infotech
           </span>
         )}
       </div>

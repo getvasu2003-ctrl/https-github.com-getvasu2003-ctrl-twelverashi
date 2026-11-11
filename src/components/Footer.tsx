@@ -79,8 +79,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
           <div className="space-y-4">
             <Logo size="md" />
             <p className="text-xs text-stone-400 leading-relaxed">
-              12Rashi is an authentic Vedic astrology portal, bridging ancient
-              Parashari astrological wisdom with live consultations, AI predictions, and lab-certified remedies.
+              <strong className="text-stone-200">12Rashi Astrology</strong> is an authentic Vedic astrology platform, operated under the sole proprietorship of <strong className="text-amber-400">12rashi Infotech</strong>. Bridging ancient Parashari astrological wisdom with live consultations, 24/7 AI predictions, and lab-certified remedies.
             </p>
 
             <div className="space-y-2 pt-2 text-xs">
@@ -258,7 +257,15 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
 
             <div className="bg-stone-800 p-3 rounded-lg border border-stone-700 space-y-1.5 text-[11px]">
               <div className="flex justify-between">
-                <span className="text-stone-400">Entity:</span>
+                <span className="text-stone-400">Brand Name:</span>
+                <span className="font-semibold text-white">12Rashi Astrology</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-400">Sole Proprietorship:</span>
+                <span className="font-semibold text-amber-300">12rashi Infotech</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-400">DLT Entity:</span>
                 <span className="font-semibold text-white">12RASHIINFOTECH</span>
               </div>
               <div className="flex justify-between">
@@ -332,15 +339,15 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
           </div>
 
           <div className="text-[11px] text-stone-500 font-mono">
-            Intermediary Intermediary Guidelines Compliance: 12RASHIINFOTECH
+            Intermediary Guidelines Compliance: 12Rashi Astrology (Sole Proprietorship of 12rashi Infotech)
           </div>
         </div>
 
         {/* Bottom Bar: Copyright & Payment Badges */}
         <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <div>
-            © {new Date().getFullYear()} 12Rashi Astrological Services Pvt. Ltd. All rights reserved.
-            Headquarters: Laxman Apartment, 3rd Floor, Pulin Khatick Road, Kolkata - 700015, India.
+            © {new Date().getFullYear()} <strong className="text-stone-300">12Rashi Astrology</strong>. All rights reserved. <strong>12Rashi Astrology</strong> is a sole proprietorship of <strong className="text-amber-300/90">12rashi Infotech</strong>.
+            Headquarters: Laxman Apartment, 3rd Floor, Pulin Khatick Road, Kolkata - 700015, West Bengal, India.
           </div>
 
           <div className="flex items-center gap-3">
