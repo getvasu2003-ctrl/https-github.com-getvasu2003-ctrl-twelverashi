@@ -75,7 +75,7 @@ export const LegalComplianceModal: React.FC = () => {
                 Legal & Regulatory Compliance Center
               </h3>
               <p className="text-[11px] text-stone-300">
-                12Rashi Astrology (Sole Proprietorship: 12rashi Infotech) • IT Rules 2021 & TRAI TCCCPR Compliant
+                12Rashi Astrology (Sole Proprietorship: 12rashi Infotech • Legal Name: Basudeo Shah) • IT Rules 2021 Compliant
               </p>
             </div>
           </div>
@@ -138,7 +138,7 @@ export const LegalComplianceModal: React.FC = () => {
 
               <div className="space-y-2.5 bg-stone-50 dark:bg-stone-800/60 p-4 rounded-2xl border border-stone-200 dark:border-stone-700">
                 <p>
-                  <strong>1. Nature of Astrological Services:</strong> All horoscopes, Janam Kundli charts, planetary transit predictions, Guna Milan compatibility scores, gemstone recommendations, and astrologer consultations provided on <strong>12Rashi Astrology</strong> (operated under the sole proprietorship of <strong>12rashi Infotech</strong>) are based on traditional Vedic Jyotish, Parashari, Jaimini, KP, and Lal Kitab principles. These calculations represent an interpretive spiritual science.
+                  <strong>1. Nature of Astrological Services:</strong> All horoscopes, Janam Kundli charts, planetary transit predictions, Guna Milan compatibility scores, gemstone recommendations, and astrologer consultations provided on <strong>12Rashi Astrology</strong> (operated under the sole proprietorship of <strong>12rashi Infotech</strong>, Legal Name: <strong>Basudeo Shah</strong>) are based on traditional Vedic Jyotish, Parashari, Jaimini, KP, and Lal Kitab principles. These calculations represent an interpretive spiritual science.
                 </p>
                 <p>
                   <strong>2. Not Medical, Legal, or Financial Advice:</strong> Consultations and AI insights are intended strictly for guidance, spiritual advisory, and self-reflection. Under no circumstances should astrological predictions substitute for qualified professional medical treatment, clinical psychiatric diagnosis, legal counsel, or certified investment/financial advisory.
@@ -178,6 +178,11 @@ export const LegalComplianceModal: React.FC = () => {
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase">Brand & Trade Name:</span>
                     <span className="font-bold text-orange-600 dark:text-orange-400 text-sm">12Rashi Astrology</span>
+                  </div>
+
+                  <div>
+                    <span className="text-stone-400 block text-[10px] uppercase">Legal Name (Proprietor):</span>
+                    <span className="font-bold text-stone-900 dark:text-stone-100 text-sm">Basudeo Shah</span>
                   </div>
 
                   <div>
@@ -227,7 +232,7 @@ export const LegalComplianceModal: React.FC = () => {
                   Data Protection & Privacy Policy
                 </h4>
                 <p>
-                  <strong>Brand & Entity:</strong> <strong>12Rashi Astrology</strong> is operated under the sole proprietorship of <strong>12rashi Infotech</strong>.
+                  <strong>Brand & Entity:</strong> <strong>12Rashi Astrology</strong> is operated under the sole proprietorship of <strong>12rashi Infotech</strong> (Legal Name: <strong>Basudeo Shah</strong>).
                 </p>
                 <p>
                   <strong>Data Collected:</strong> We collect your Name, Date of Birth, Exact Time of Birth, Place of Birth, and Mobile Number for DLT OTP verification. This data is exclusively utilized to calculate planetary ephemeris, Lagna charts, and Dasha cycles.
@@ -254,7 +259,7 @@ export const LegalComplianceModal: React.FC = () => {
                   <span>12Rashi Astrology Fair-Billing Guarantee™ & Terms</span>
                 </h4>
                 <p>
-                  <strong>Entity:</strong> Services are offered under the brand <strong>12Rashi Astrology</strong>, a sole proprietorship of <strong>12rashi Infotech</strong>.
+                  <strong>Entity:</strong> Services are offered under the brand <strong>12Rashi Astrology</strong>, a sole proprietorship of <strong>12rashi Infotech</strong> (Legal Name: <strong>Basudeo Shah</strong>).
                 </p>
                 <p>
                   <strong>Per-Second Metering:</strong> Unlike conventional platforms that round up a 61-second call to 2 full minutes, 12Rashi Astrology bills strictly per second (e.g. ₹30/min = ₹0.50/second).

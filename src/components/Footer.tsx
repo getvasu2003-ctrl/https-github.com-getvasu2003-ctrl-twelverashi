@@ -25,6 +25,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
     setLegalModalTab,
     setOpenCustomDomainModal,
     setOpenPlayStoreModal,
+    setOpenBrandStudioModal,
   } = useApp();
 
   return (
@@ -79,7 +80,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
           <div className="space-y-4">
             <Logo size="md" />
             <p className="text-xs text-stone-400 leading-relaxed">
-              <strong className="text-stone-200">12Rashi Astrology</strong> is an authentic Vedic astrology platform, operated under the sole proprietorship of <strong className="text-amber-400">12rashi Infotech</strong>. Bridging ancient Parashari astrological wisdom with live consultations, 24/7 AI predictions, and lab-certified remedies.
+              <strong className="text-stone-200">12Rashi Astrology</strong> is an authentic Vedic astrology platform, operated under the sole proprietorship of <strong className="text-amber-400">12rashi Infotech</strong> (Legal Name: <strong className="text-stone-200">Basudeo Shah</strong>). Bridging ancient Parashari astrological wisdom with live consultations, 24/7 AI predictions, and lab-certified remedies.
             </p>
 
             <div className="space-y-2 pt-2 text-xs">
@@ -243,6 +244,15 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
                   Astro Club VIP Membership Plans
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => setOpenBrandStudioModal(true)}
+                  className="hover:text-orange-300 transition cursor-pointer text-amber-400 font-bold flex items-center gap-1.5"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  <span>App Icons & Brand Logo Kit (6 Samples)</span>
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -259,6 +269,10 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               <div className="flex justify-between">
                 <span className="text-stone-400">Brand Name:</span>
                 <span className="font-semibold text-white">12Rashi Astrology</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-400">Legal Name:</span>
+                <span className="font-semibold text-white">Basudeo Shah</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-stone-400">Sole Proprietorship:</span>
@@ -339,14 +353,14 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
           </div>
 
           <div className="text-[11px] text-stone-500 font-mono">
-            Intermediary Guidelines Compliance: 12Rashi Astrology (Sole Proprietorship of 12rashi Infotech)
+            Intermediary Guidelines Compliance: 12Rashi Astrology (Sole Proprietorship: 12rashi Infotech • Legal Name: Basudeo Shah)
           </div>
         </div>
 
         {/* Bottom Bar: Copyright & Payment Badges */}
         <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <div>
-            © {new Date().getFullYear()} <strong className="text-stone-300">12Rashi Astrology</strong>. All rights reserved. <strong>12Rashi Astrology</strong> is a sole proprietorship of <strong className="text-amber-300/90">12rashi Infotech</strong>.
+            © {new Date().getFullYear()} <strong className="text-stone-300">12Rashi Astrology</strong>. All rights reserved. <strong>12Rashi Astrology</strong> is a sole proprietorship of <strong className="text-amber-300/90">12rashi Infotech</strong> (Legal Name: <strong className="text-stone-300">Basudeo Shah</strong>).
             Headquarters: Laxman Apartment, 3rd Floor, Pulin Khatick Road, Kolkata - 700015, West Bengal, India.
           </div>
 

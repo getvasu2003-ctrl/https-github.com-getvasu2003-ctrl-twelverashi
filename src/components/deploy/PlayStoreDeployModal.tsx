@@ -213,7 +213,8 @@ location ^~ /.well-known/ {
 • Authentic AstroStore: Lab-certified gemstones, Rudrakshas, and energized yantras delivered directly to your doorstep.
 • Safe & Secure Payments: Protected transactions via UPI, Google Pay, PhonePe, and NetBanking with transparent per-minute billing.
 
-Entity: 12RASHIINFOTECH | TRAI DLT Header: TWRSHI
+Brand: 12Rashi Astrology | Sole Proprietorship: 12rashi Infotech | Legal Name: Basudeo Shah
+DLT Entity: 12RASHIINFOTECH | TRAI DLT Header: TWRSHI
 Customer Grievance Redressal available 24/7.`,
     category: 'Lifestyle / Astrology',
     contentRating: 'Everyone (Content suitable for all audiences)',

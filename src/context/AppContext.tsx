@@ -221,6 +221,10 @@ interface AppContextType {
   setOpenCustomDomainModal: (open: boolean) => void;
   openPlayStoreModal: boolean;
   setOpenPlayStoreModal: (open: boolean) => void;
+  openBrandStudioModal: boolean;
+  setOpenBrandStudioModal: (open: boolean) => void;
+  activeLogoPreset: string;
+  setActiveLogoPreset: (preset: string) => void;
   legalModalTab: 'disclaimer' | 'privacy' | 'terms' | 'grievance' | 'deletion';
   setLegalModalTab: (tab: 'disclaimer' | 'privacy' | 'terms' | 'grievance' | 'deletion') => void;
   hasClaimedFreeTrial: boolean;
@@ -693,6 +697,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [openTatkalModal, setOpenTatkalModal] = useState<boolean>(false);
   const [openCustomDomainModal, setOpenCustomDomainModal] = useState<boolean>(false);
   const [openPlayStoreModal, setOpenPlayStoreModal] = useState<boolean>(false);
+  const [openBrandStudioModal, setOpenBrandStudioModal] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('open') === 'brand-studio' || window.location.hash === '#brand-studio';
+    }
+    return false;
+  });
+  const [activeLogoPreset, setActiveLogoPresetState] = useState<string>(() => {
+    try {
+      return localStorage.getItem('12rashi_logo_preset') || 'default-chakra';
+    } catch {
+      return 'default-chakra';
+    }
+  });
+  const setActiveLogoPreset = (preset: string) => {
+    setActiveLogoPresetState(preset);
+    try {
+      localStorage.setItem('12rashi_logo_preset', preset);
+    } catch {
+      // ignore
+    }
+  };
   const [legalModalTab, setLegalModalTab] = useState<'disclaimer' | 'privacy' | 'terms' | 'grievance' | 'deletion'>('disclaimer');
   const [hasClaimedFreeTrial, setHasClaimedFreeTrial] = useState<boolean>(() => {
     try {
@@ -712,6 +738,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [openKundliPdfModal, setOpenKundliPdfModal] = useState<boolean>(false);
   const [openOnboardingModal, setOpenOnboardingModal] = useState<boolean>(() => {
     try {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('open') === 'brand-studio' || window.location.hash === '#brand-studio') {
+          return false;
+        }
+      }
       return localStorage.getItem('12rashi_onboarding_completed') !== 'true';
     } catch {
       return false;
@@ -2022,6 +2054,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setOpenCustomDomainModal,
         openPlayStoreModal,
         setOpenPlayStoreModal,
+        openBrandStudioModal,
+        setOpenBrandStudioModal,
+        activeLogoPreset,
+        setActiveLogoPreset,
         legalModalTab,
         setLegalModalTab,
         hasClaimedFreeTrial,

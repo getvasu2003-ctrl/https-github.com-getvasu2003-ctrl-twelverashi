@@ -728,7 +728,7 @@ export const ComprehensiveKundliReportView: React.FC<ComprehensiveKundliReportVi
                 12Rashi Astrology (Sole Proprietorship: 12rashi Infotech)
               </strong>
               <p className="text-stone-500 text-[11px]">
-                Headquarters: Pulin Khatick Road, Kolkata - 700015 • Digitally Signed & Sealed
+                Legal Name: Basudeo Shah • Headquarters: Pulin Khatick Road, Kolkata - 700015 • Digitally Signed & Sealed
               </p>
             </div>
 

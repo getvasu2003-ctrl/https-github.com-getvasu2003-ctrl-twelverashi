@@ -66,6 +66,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
     setOpenLoginModal,
     setOpenTatkalModal,
     setOpenOnboardingModal,
+    setOpenBrandStudioModal,
     refreshApp,
   } = useApp();
 
@@ -286,6 +287,21 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
                       </button>
                     );
                   })}
+                  <button
+                    onClick={() => {
+                      setOpenBrandStudioModal(true);
+                      setMoreMenuOpen(false);
+                    }}
+                    className="w-full px-3 py-2 rounded-xl text-xs font-bold flex items-center justify-between transition cursor-pointer text-left text-amber-800 dark:text-amber-200 bg-amber-50/80 dark:bg-amber-950/30 hover:bg-amber-100 border border-amber-200/80 dark:border-amber-800/60 mt-1"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span>🎨</span>
+                      <span className="line-clamp-1">App Icons & Logo Studio</span>
+                    </div>
+                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-extrabold uppercase bg-orange-600 text-white">
+                      6 Kits
+                    </span>
+                  </button>
                 </div>
               </div>
             )}
@@ -595,6 +611,17 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
               <span>Take Interactive Platform Tour (Intro to Kundli, Pandits, Rashi Fal)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setOpenBrandStudioModal(true);
+                setMobileMenuOpen(false);
+              }}
+              className="p-2 rounded-xl bg-orange-50 dark:bg-stone-800 border border-orange-300 dark:border-stone-700 text-orange-900 dark:text-amber-300 font-bold flex items-center gap-1.5 cursor-pointer col-span-2"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-orange-600" />
+              <span>App Icons & Brand Logo Studio (6 Concepts)</span>
             </button>
 
             {/* Mobile Refresh Button */}

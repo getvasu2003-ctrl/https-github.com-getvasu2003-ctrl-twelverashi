@@ -241,6 +241,13 @@ export const DltSmsModal: React.FC = () => {
               </div>
 
               <div className="bg-white/70 dark:bg-stone-800/80 p-2.5 rounded-xl border border-stone-200 dark:border-stone-700">
+                <span className="text-stone-400 block text-[10px] uppercase">Legal Name (Proprietor):</span>
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-stone-900 dark:text-stone-100">Basudeo Shah</span>
+                </div>
+              </div>
+
+              <div className="bg-white/70 dark:bg-stone-800/80 p-2.5 rounded-xl border border-stone-200 dark:border-stone-700">
                 <span className="text-stone-400 block text-[10px] uppercase">Sole Proprietorship / DLT Entity:</span>
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-stone-900 dark:text-stone-100">12rashi Infotech ({DLT_CONFIG.entityName})</span>

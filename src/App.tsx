@@ -48,6 +48,7 @@ import { TatkalConsultationModal } from './components/consultation/TatkalConsult
 import { ShubhShagunGiftCards } from './components/growth/ShubhShagunGiftCards.tsx';
 import { OnboardingModal } from './components/onboarding/OnboardingModal.tsx';
 import { MyAstroProfile } from './components/profile/MyAstroProfile.tsx';
+import { BrandIconStudioModal } from './components/brand/BrandIconStudioModal.tsx';
 
 const MainAppContent: React.FC = () => {
   const {
@@ -239,6 +240,9 @@ const MainAppContent: React.FC = () => {
 
       {/* Google Play Store Release & .AAB Packaging Center */}
       <PlayStoreDeployModal isOpen={openPlayStoreModal} onClose={() => setOpenPlayStoreModal(false)} />
+
+      {/* Home Screen App Icons & Brand Logo Studio */}
+      <BrandIconStudioModal />
 
       {/* User Login & Mobile Number Verification Modal */}
       <UserLoginModal isOpen={openLoginModal} onClose={() => setOpenLoginModal(false)} />
