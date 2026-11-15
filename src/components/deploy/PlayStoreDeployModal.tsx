@@ -190,7 +190,7 @@ location ^~ /.well-known/ {
     { title: 'PWA Web App Manifest', status: 'Passed', detail: 'public/manifest.json with orientation, theme colors & shortcuts' },
     { title: 'Google Play 512x512 Hi-Res Icon', status: 'Passed', detail: 'public/icons/icon-512.png (Required for Google Play Store)' },
     { title: 'Android Adaptive Maskable Icon', status: 'Passed', detail: 'public/icons/icon-maskable-512.png (Safe zone squircle padding)' },
-    { title: 'Digital Asset Links (TWA)', status: 'Passed', detail: 'public/.well-known/assetlinks.json (Enables full-screen app shell)' },
+    { title: 'Digital Asset Links (TWA)', status: 'Passed', detail: 'public/.well-known/assetlinks.json configured with SHA-256 F2:13:3D:F0:...D7:58:56' },
     { title: 'PWA Offline Shell & Service Worker', status: 'Passed', detail: 'public/sw.js network-first cache & offline resilience' },
     { title: 'Agora WebRTC Voice & Video', status: 'Passed', detail: 'Fully compatible with Android Chrome WebRTC & camera/mic permissions' },
     { title: 'Cashfree Production Payments', status: 'Passed', detail: 'UPI Intent, Google Pay, PhonePe, Cards & NetBanking approved' },
@@ -627,6 +627,25 @@ npx @bubblewrap/cli build`}
           {/* TAB 4: PLAY APP SIGNING KEY FIX & RECOVERY */}
           {activeTab === 'signing' && (
             <div className="space-y-5 text-xs">
+              <div className="bg-emerald-950/30 p-4 rounded-xl border border-emerald-600/40 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 text-emerald-300 font-bold text-xs">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span>Configured Digital Asset Links SHA-256 Fingerprint (Live in assetlinks.json)</span>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard('F2:13:3D:F0:94:11:36:8F:93:F9:E9:27:8C:7D:ED:2B:46:30:0A:FD:40:F4:30:89:3F:18:D9:D9:71:D7:58:56', 'sha256')}
+                    className="px-2 py-1 bg-stone-800 hover:bg-stone-700 rounded text-[11px] text-emerald-300 font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    <Copy className="w-3 h-3" />
+                    <span>{copiedKey === 'sha256' ? 'Copied!' : 'Copy SHA-256'}</span>
+                  </button>
+                </div>
+                <p className="font-mono text-[11px] text-amber-300 break-all bg-stone-950 p-2.5 rounded-lg border border-stone-800">
+                  F2:13:3D:F0:94:11:36:8F:93:F9:E9:27:8C:7D:ED:2B:46:30:0A:FD:40:F4:30:89:3F:18:D9:D9:71:D7:58:56
+                </p>
+              </div>
+
               <div className="bg-amber-950/30 p-4 rounded-xl border border-amber-600/40 space-y-2">
                 <div className="flex items-center gap-2 text-amber-300 font-bold text-sm">
                   <Key className="w-4 h-4 text-amber-400" />
