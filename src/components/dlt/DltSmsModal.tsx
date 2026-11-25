@@ -38,9 +38,9 @@ export const DltSmsModal: React.FC = () => {
   const [dispatchedInfo, setDispatchedInfo] = useState<any>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // OTP Verification Test State
-  const [otpPhone, setOtpPhone] = useState(userProfile?.phone || '9831049814');
-  const [dispatchedOtp, setDispatchedOtp] = useState<string | null>(null);
+  // Live OTP Verification Test State (Zero dummy OTP exposure)
+  const [otpPhone, setOtpPhone] = useState(userProfile?.phone || '');
+  const [otpDispatchInfo, setOtpDispatchInfo] = useState<any>(null);
   const [inputOtp, setInputOtp] = useState('');
   const [otpVerificationResult, setOtpVerificationResult] = useState<any>(null);
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
@@ -98,7 +98,8 @@ export const DltSmsModal: React.FC = () => {
   const handleSendTestOtp = async () => {
     setIsSending(true);
     setOtpVerificationResult(null);
-    setDispatchedOtp(null);
+    setOtpDispatchInfo(null);
+    setInputOtp('');
 
     const res = await sendSmsOtp({
       phone: otpPhone,
@@ -106,14 +107,11 @@ export const DltSmsModal: React.FC = () => {
     });
 
     setIsSending(false);
+    setOtpDispatchInfo(res);
     if (res?.success) {
-      setDispatchedOtp(res.otp || null);
-      if (res.otp) {
-        setInputOtp(res.otp); // Pre-fill for instant test convenience
-      }
       addNotification(
-        'OTP Dispatched',
-        `OTP dispatched to +91 ${res.phone} via Jio DLT Header [${res.header}].`,
+        'Live OTP Dispatched',
+        `Live SMS OTP dispatched to +91 ${res.phone} via Jio DLT Header [${res.header}].`,
         'payment'
       );
     }
@@ -465,7 +463,7 @@ export const DltSmsModal: React.FC = () => {
                 </div>
 
                 <p className="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
-                  Trigger a live OTP code using Jio DLT approved template. The backend routes the dispatch through MSG91 v5 OTP API when configured or simulates instant live telecom delivery.
+                  Trigger a genuine live SMS OTP using your Reliance Jio DLT approved template (<span className="font-mono font-bold">_TWLRSISIGNUPOTP</span>). No dummy codes are shown or accepted — enter the real 6-digit code delivered to the phone to verify.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
@@ -475,38 +473,49 @@ export const DltSmsModal: React.FC = () => {
                       type="tel"
                       value={otpPhone}
                       onChange={(e) => setOtpPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      placeholder="9831049814"
+                      placeholder="Enter 10-digit Indian mobile"
                       className="w-full pl-10 pr-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-xs outline-hidden focus:border-emerald-500"
                     />
                   </div>
                   <button
                     onClick={handleSendTestOtp}
-                    disabled={isSending || otpPhone.length < 10}
+                    disabled={isSending || !/^[6-9]\d{9}$/.test(otpPhone)}
                     className="py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 transition"
                   >
                     <Send className="w-3.5 h-3.5" />
-                    <span>{isSending ? 'Dispatching...' : 'Dispatch 6-Digit OTP'}</span>
+                    <span>{isSending ? 'Dispatching...' : 'Send Live SMS OTP'}</span>
                   </button>
                 </div>
 
-                {dispatchedOtp && (
+                {otpDispatchInfo && !otpDispatchInfo.success && (
+                  <div className="p-3 bg-rose-50 dark:bg-rose-950/40 rounded-xl border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs flex items-start gap-2">
+                    <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{otpDispatchInfo.message || 'MSG91 dispatch failed.'}</span>
+                  </div>
+                )}
+
+                {otpDispatchInfo?.success && (
                   <div className="p-3 bg-white dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-700 space-y-3">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-stone-700 dark:text-stone-300">
-                        Generated OTP Code (for testing verification):
+                    <div className="flex items-center justify-between text-xs flex-wrap gap-2">
+                      <span className="font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>Live SMS Dispatched via MSG91 ({otpDispatchInfo.header || 'TWRSHI'})</span>
                       </span>
-                      <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm tracking-wider">
-                        {dispatchedOtp}
-                      </span>
+                      {otpDispatchInfo.requestId && (
+                        <span className="font-mono text-[10px] text-stone-500">
+                          Req ID: {otpDispatchInfo.requestId}
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-2">
                       <input
                         type="text"
+                        inputMode="numeric"
                         maxLength={6}
                         value={inputOtp}
                         onChange={(e) => setInputOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                        placeholder="Enter 6-digit OTP"
+                        placeholder="Enter 6-digit SMS OTP received on phone"
                         className="flex-1 px-3 py-2 rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-center font-mono font-bold text-sm tracking-widest outline-hidden"
                       />
                       <button
@@ -515,7 +524,7 @@ export const DltSmsModal: React.FC = () => {
                         className="py-2 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>{isVerifyingOtp ? 'Verifying...' : 'Verify OTP'}</span>
+                        <span>{isVerifyingOtp ? 'Verifying...' : 'Verify Live OTP'}</span>
                       </button>
                     </div>
 

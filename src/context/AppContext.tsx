@@ -157,7 +157,7 @@ interface AppContextType {
   isUserLoggedIn: boolean;
   openLoginModal: boolean;
   setOpenLoginModal: (open: boolean) => void;
-  loginWithPhone: (phone: string, name?: string) => Promise<boolean>;
+  loginWithPhone: (phone: string, name?: string) => Promise<{ success: boolean; isNewUser: boolean }>;
   logoutUser: () => void;
   updateUserAccount: (data: Partial<UserAccount>) => void;
 
@@ -736,19 +736,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
   const [openKundliPdfModal, setOpenKundliPdfModal] = useState<boolean>(false);
-  const [openOnboardingModal, setOpenOnboardingModal] = useState<boolean>(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('open') === 'brand-studio' || window.location.hash === '#brand-studio') {
-          return false;
-        }
-      }
-      return localStorage.getItem('12rashi_onboarding_completed') !== 'true';
-    } catch {
-      return false;
-    }
-  });
+  // Never block first-time visitors with an arrival popup; tour remains 1-click accessible from header/buttons
+  const [openOnboardingModal, setOpenOnboardingModal] = useState<boolean>(false);
   const [openAstroProfileModal, setOpenAstroProfileModal] = useState<boolean>(false);
   const [queueStatus, setQueueStatus] = useState<{ astrologerId: string; position: number; estimatedWaitMins: number } | null>(null);
 
@@ -784,36 +773,45 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, [user?.uid]);
 
-  const loginWithPhone = async (phone: string, name?: string): Promise<boolean> => {
+  const loginWithPhone = async (
+    phone: string,
+    name?: string
+  ): Promise<{ success: boolean; isNewUser: boolean }> => {
     const cleanPhone = phone.replace(/\D/g, '').slice(-10);
     const uid = 'user_' + cleanPhone;
 
-    let existingProfile = await getUserFromFirestore(uid);
+    const existingProfile = await getUserFromFirestore(uid);
     let currentUserData: UserAccount;
+    const isNewUser = !existingProfile || !existingProfile.dob || existingProfile.name === 'Astro Seeker';
 
     if (existingProfile) {
       currentUserData = {
         ...existingProfile,
+        uid: existingProfile.uid || uid,
+        phone: existingProfile.phone || cleanPhone,
         isVerified: true,
       };
+      // Refresh verified flag in Firestore silently
+      saveUserToFirestore(currentUserData).catch(() => {});
     } else {
       currentUserData = {
         uid,
         phone: cleanPhone,
         name: name || 'Astro Seeker',
-        walletBalance: 0,
+        walletBalance: 100, // ₹100 Welcome Consultation Credit for verified new users
         freeTrialClaimed: false,
         createdAt: new Date().toISOString(),
         isVerified: true,
       };
       await saveUserToFirestore(currentUserData);
+      setWalletBalance((prev) => (prev < 100 ? 100 : prev));
     }
 
     setUser(currentUserData);
     setUserProfile((prev) => {
       const updated = {
         ...prev,
-        name: currentUserData.name || prev.name,
+        name: currentUserData.name && currentUserData.name !== 'Astro Seeker' ? currentUserData.name : prev.name,
         phone: currentUserData.phone || prev.phone,
         rashi: currentUserData.rashi || prev.rashi,
         gender: currentUserData.gender || prev.gender,
@@ -842,11 +840,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     addNotification(
-      'Account Verified',
-      `Welcome to 12Rashi, ${currentUserData.name}! 5-Min Free Consultation Voucher Active.`,
+      'Mobile Verified via Jio DLT',
+      isNewUser
+        ? 'Welcome to 12Rashi! Your 5-Min Free Consultation & ₹100 Welcome Credit are active.'
+        : `Welcome back, ${currentUserData.name}! Your Kundli vault & wallet are synced.`,
       'muhurat'
     );
-    return true;
+    return { success: true, isNewUser };
   };
 
   const logoutUser = () => {

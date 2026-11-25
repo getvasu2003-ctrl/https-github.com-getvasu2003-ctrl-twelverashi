@@ -75,7 +75,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
         </div>
 
         {/* Main Footer Links */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-10 border-b border-stone-800">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-10 border-b border-stone-800">
           {/* Column 1: Brand & Contact Info */}
           <div className="space-y-4">
             <Logo size="md" />
@@ -115,6 +115,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
             <ul className="space-y-2 text-xs">
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('astrologers')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -123,6 +124,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('astrologers')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -131,6 +133,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('astrologers')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -139,6 +142,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('astrologers')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -147,6 +151,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('milan')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -155,6 +160,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('ai-insights')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -172,6 +178,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
             <ul className="space-y-2 text-xs">
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('panchang')}
                   className="hover:text-orange-400 transition cursor-pointer text-amber-300 font-semibold"
                 >
@@ -180,6 +187,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('archive')}
                   className="hover:text-orange-400 transition cursor-pointer text-orange-400 font-semibold"
                 >
@@ -188,6 +196,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('kundli')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -196,6 +205,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('reports')}
                   className="hover:text-amber-400 transition cursor-pointer text-amber-300 font-bold flex items-center gap-1.5"
                 >
@@ -205,6 +215,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('horoscope')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -213,6 +224,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('store')}
                   className="hover:text-orange-400 transition cursor-pointer"
                 >
@@ -221,6 +233,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setActiveTab('live-puja')}
                   className="hover:text-amber-400 transition cursor-pointer text-amber-300 font-bold flex items-center gap-1.5"
                 >
@@ -230,6 +243,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setOpenFairBillingModal(true)}
                   className="hover:text-emerald-400 transition cursor-pointer text-emerald-400 font-bold"
                 >
@@ -238,6 +252,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setOpenMembershipModal(true)}
                   className="hover:text-orange-400 transition cursor-pointer text-amber-300 font-semibold"
                 >
@@ -246,6 +261,7 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
               </li>
               <li>
                 <button
+                  type="button"
                   onClick={() => setOpenBrandStudioModal(true)}
                   className="hover:text-orange-300 transition cursor-pointer text-amber-400 font-bold flex items-center gap-1.5"
                 >
@@ -254,47 +270,6 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
                 </button>
               </li>
             </ul>
-          </div>
-
-          {/* Column 4: DLT Compliance & Official Verification */}
-          <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-amber-500 pl-2">
-              DLT SMS Compliance
-            </h3>
-            <p className="text-xs text-stone-400 mb-3 leading-relaxed">
-              Fully registered with TRAI (Telecom Regulatory Authority of India) under Telecom Commercial Communications Customer Preference Regulations (TCCCPR 2018).
-            </p>
-
-            <div className="bg-stone-800 p-3 rounded-lg border border-stone-700 space-y-1.5 text-[11px]">
-              <div className="flex justify-between">
-                <span className="text-stone-400">Brand Name:</span>
-                <span className="font-semibold text-white">12Rashi Astrology</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-400">Legal Name:</span>
-                <span className="font-semibold text-white">Basudeo Shah</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-400">Sole Proprietorship:</span>
-                <span className="font-semibold text-amber-300">12rashi Infotech</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-400">DLT Entity:</span>
-                <span className="font-semibold text-white">12RASHIINFOTECH</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-400">Principal Entity ID:</span>
-                <span className="font-mono text-amber-300 font-bold">1201171886368224321</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-400">Approved Header:</span>
-                <span className="font-mono text-emerald-400 font-bold">TWRSHI (1205174948652740996)</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-400">Telecom & Gateway:</span>
-                <span className="text-stone-300">Reliance Jio DLT / MSG91</span>
-              </div>
-            </div>
           </div>
         </div>
 

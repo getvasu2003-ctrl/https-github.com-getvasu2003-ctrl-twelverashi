@@ -45,7 +45,7 @@ export const DLT_CONFIG: TelecomGatewayConfig = {
     service: 'TWRSHI',
   },
   msg91Config: {
-    authKey: '418062AMd6Ybkr3q6935b9aaP1',
+    authKey: '418062••••••••••aaP1',
     templateId: '6935bfc0a6240e24e80be279',
     senderId: 'TWRSHI',
     route: 'v5/otp',

@@ -3,6 +3,7 @@ import { GoogleGenAI } from '@google/genai';
 import agoraTokenPkg from 'agora-token';
 const { RtcTokenBuilder, RtcRole } = agoraTokenPkg as any;
 import type { IncomingMessage, ServerResponse } from 'http';
+import crypto from 'crypto';
 import dns from 'dns';
 import fs from 'fs';
 import path from 'path';
@@ -13,8 +14,42 @@ import { VEDIC_REMEDIES } from '../data/remediesData.ts';
 import { LIVE_PUJAS_CATALOG } from '../data/livePujaData.ts';
 import { KUNDLI_REPORTS_CATALOG } from '../data/reportsCatalogData.ts';
 
-// In-memory OTP cache for phone verification
-const otpCache = new Map<string, { otp: string; expiresAt: number; purpose?: string }>();
+// Secure server-side OTP record cache (salted SHA-256 hash only — never returned to client)
+interface OtpRecord {
+  otpHash: string;
+  salt: string;
+  expiresAt: number;
+  attempts: number;
+  maxAttempts: number;
+  deliveredViaMsg91: boolean;
+  sentAt: number;
+  purpose?: string;
+}
+
+const otpCache = new Map<string, OtpRecord>();
+const otpRateLimits = new Map<string, { lastSentAt: number; count: number; windowStart: number }>();
+
+const INDIAN_MOBILE_REGEX = /^[6-9]\d{9}$/;
+
+function hashOtp(phone: string, otp: string, salt: string): string {
+  return crypto.createHash('sha256').update(`${phone}:${otp}:${salt}`).digest('hex');
+}
+
+function normalizeIndianMobile(raw: unknown): string | null {
+  const digits = String(raw || '').replace(/\D/g, '');
+  if (digits.length === 12 && digits.startsWith('91')) {
+    const ten = digits.slice(2);
+    return INDIAN_MOBILE_REGEX.test(ten) ? ten : null;
+  }
+  if (digits.length === 11 && digits.startsWith('0')) {
+    const ten = digits.slice(1);
+    return INDIAN_MOBILE_REGEX.test(ten) ? ten : null;
+  }
+  if (digits.length === 10 && INDIAN_MOBILE_REGEX.test(digits)) {
+    return digits;
+  }
+  return null;
+}
 
 // Initialize server-side Gemini client utility
 // Note: Follows gemini-api skill instructions with User-Agent header
@@ -642,147 +677,433 @@ ${name}:`;
       });
     }
 
-    // 11. Send OTP API (Live MSG91 / Jio DLT Integration)
+    // 11. Send OTP API (100% Live MSG91 / Jio DLT Integration — Zero Dummy OTPs)
     if (pathname === '/api/sms/send-otp' && req.method === 'POST') {
       const { phone, purpose } = await parseJsonBody(req);
-      const rawDigits = String(phone || '').replace(/\D/g, '');
-      const cleanPhone = rawDigits.length >= 10 ? rawDigits.slice(-10) : '9831049814';
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const cleanPhone = normalizeIndianMobile(phone);
 
-      // Store in memory cache with 3-minute expiry matching approved DLT template
-      otpCache.set(cleanPhone, {
-        otp,
-        expiresAt: Date.now() + 3 * 60 * 1000,
-        purpose: purpose || 'verification',
-      });
+      if (!cleanPhone) {
+        return sendJson(res, 400, {
+          success: false,
+          code: 'INVALID_MOBILE',
+          message: 'Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.',
+        });
+      }
 
-      const msg91AuthKey = MSG91_AUTH_KEY;
-      const msg91TemplateId = DLT_CONFIG.msg91Config.templateId; // 6935bfc0a6240e24e80be279
-      let liveDispatchStatus = 'SIMULATED_LOCAL';
-      let gatewayDetails: any = null;
-      let ipWhitelistNotice: string | null = null;
+      if (!MSG91_AUTH_KEY) {
+        return sendJson(res, 503, {
+          success: false,
+          code: 'GATEWAY_NOT_CONFIGURED',
+          message: 'SMS OTP gateway is not configured on the server. Please configure MSG91_AUTH_KEY.',
+        });
+      }
 
-      if (msg91AuthKey) {
-        try {
-          const msg91Url = `https://api.msg91.com/api/v5/otp?template_id=${msg91TemplateId}&mobile=91${cleanPhone}&authkey=${msg91AuthKey}&otp=${otp}&otp_expiry=3`;
-          const msg91Res = await fetch(msg91Url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'authkey': msg91AuthKey,
-            },
+      // Protect against rapid duplicate sends / SMS abuse
+      const now = Date.now();
+      const rateEntry = otpRateLimits.get(cleanPhone);
+      if (rateEntry) {
+        if (now - rateEntry.lastSentAt < 25 * 1000) {
+          const waitSecs = Math.ceil((25 * 1000 - (now - rateEntry.lastSentAt)) / 1000);
+          return sendJson(res, 429, {
+            success: false,
+            code: 'RATE_LIMITED',
+            retryAfterSeconds: waitSecs,
+            message: `Please wait ${waitSecs} seconds before requesting another OTP.`,
           });
-
-          const resText = await msg91Res.text();
-          let parsedMsg91: any;
-          try {
-            parsedMsg91 = JSON.parse(resText);
-          } catch {
-            parsedMsg91 = { raw: resText };
-          }
-
-          gatewayDetails = parsedMsg91;
-          if (msg91Res.status === 418 || (parsedMsg91?.message && parsedMsg91.message.includes('IP'))) {
-            ipWhitelistNotice = 'MSG91 returned Error 418 (IP not whitelisted). Please whitelist the server outbound IP in MSG91 -> Authkey -> Actions -> IP Security.';
-            liveDispatchStatus = 'IP_NOT_WHITELISTED';
-          } else if (msg91Res.ok || parsedMsg91?.type === 'success') {
-            liveDispatchStatus = 'LIVE_DELIVERED_MSG91';
-          } else {
-            liveDispatchStatus = `GATEWAY_HTTP_${msg91Res.status}`;
-          }
-        } catch (gatewayErr: any) {
-          console.error('MSG91 Dispatch Exception:', gatewayErr);
-          gatewayDetails = { error: gatewayErr.message };
+        }
+        if (now - rateEntry.windowStart < 15 * 60 * 1000 && rateEntry.count >= 6) {
+          return sendJson(res, 429, {
+            success: false,
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Too many OTP requests for this number. Please try again after 15 minutes.',
+          });
         }
       }
 
-      return sendJson(res, 200, {
-        success: true,
-        message: `OTP dispatched via Jio DLT Header [${DLT_CONFIG.primaryHeader}]`,
-        phone: cleanPhone,
-        otp, // Included for development testing & immediate validation
-        deliveryStatus: liveDispatchStatus,
-        telecomOperator: DLT_CONFIG.telecomOperator,
-        entityName: DLT_CONFIG.entityName,
-        principalEntityId: DLT_CONFIG.principalEntityId,
-        header: DLT_CONFIG.primaryHeader,
-        dltTemplateId: DLT_CONFIG.jioDltConfig.approvedTemplateId,
-        msg91TemplateId: DLT_CONFIG.msg91Config.templateId,
-        ipWhitelistNotice,
-        gatewayDetails,
-        timestamp: new Date().toISOString(),
-      });
+      const otp = crypto.randomInt(100000, 1000000).toString();
+      const msg91TemplateId = process.env.MSG91_TEMPLATE_ID || DLT_CONFIG.msg91Config.templateId;
+
+      try {
+        const msg91Params = new URLSearchParams({
+          template_id: msg91TemplateId,
+          mobile: `91${cleanPhone}`,
+          otp,
+          otp_expiry: '3',
+          otp_length: '6',
+          realTimeResponse: '1',
+        });
+
+        const msg91Url = `https://control.msg91.com/api/v5/otp?${msg91Params.toString()}`;
+        const msg91Res = await fetch(msg91Url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authkey: MSG91_AUTH_KEY,
+          },
+          body: JSON.stringify({}),
+          signal: AbortSignal.timeout(10000),
+        });
+
+        const resText = await msg91Res.text();
+        let parsedMsg91: any;
+        try {
+          parsedMsg91 = JSON.parse(resText);
+        } catch {
+          parsedMsg91 = { raw: resText };
+        }
+
+        const isIpBlocked =
+          msg91Res.status === 418 ||
+          (typeof parsedMsg91?.message === 'string' && parsedMsg91.message.toLowerCase().includes('ip'));
+
+        if (isIpBlocked) {
+          return sendJson(res, 502, {
+            success: false,
+            code: 'MSG91_IP_NOT_WHITELISTED',
+            deliveryStatus: 'IP_NOT_WHITELISTED',
+            message: 'SMS gateway rejected server IP (HTTP 418). Please whitelist the server outbound IP in MSG91 → Authkey → IP Security.',
+            ipWhitelistNotice: 'MSG91 returned HTTP 418 (IP not whitelisted).',
+            gatewayDetails: parsedMsg91,
+          });
+        }
+
+        const isDelivered = msg91Res.ok && parsedMsg91?.type === 'success';
+
+        if (!isDelivered) {
+          return sendJson(res, 502, {
+            success: false,
+            code: 'MSG91_DISPATCH_FAILED',
+            deliveryStatus: `GATEWAY_ERROR_${msg91Res.status}`,
+            message: parsedMsg91?.message || 'Unable to deliver SMS OTP right now. Please verify mobile number and try again.',
+            gatewayDetails: parsedMsg91,
+          });
+        }
+
+        // Store salted SHA-256 hash only (never exposed to client)
+        const salt = crypto.randomBytes(16).toString('hex');
+        otpCache.set(cleanPhone, {
+          otpHash: hashOtp(cleanPhone, otp, salt),
+          salt,
+          expiresAt: now + 3 * 60 * 1000,
+          attempts: 0,
+          maxAttempts: 5,
+          deliveredViaMsg91: true,
+          sentAt: now,
+          purpose: purpose || 'login',
+        });
+
+        // Update rate limit window
+        if (!rateEntry || now - rateEntry.windowStart >= 15 * 60 * 1000) {
+          otpRateLimits.set(cleanPhone, { lastSentAt: now, count: 1, windowStart: now });
+        } else {
+          otpRateLimits.set(cleanPhone, {
+            lastSentAt: now,
+            count: rateEntry.count + 1,
+            windowStart: rateEntry.windowStart,
+          });
+        }
+
+        return sendJson(res, 200, {
+          success: true,
+          message: `6-digit verification OTP sent via Jio DLT [${DLT_CONFIG.primaryHeader}] to +91 ${cleanPhone.slice(0, 2)}******${cleanPhone.slice(-2)}`,
+          phone: cleanPhone,
+          deliveryStatus: 'LIVE_DELIVERED_MSG91',
+          requestId: parsedMsg91?.request_id || null,
+          expiresInSeconds: 180,
+          telecomOperator: DLT_CONFIG.telecomOperator,
+          entityName: DLT_CONFIG.entityName,
+          principalEntityId: DLT_CONFIG.principalEntityId,
+          header: DLT_CONFIG.primaryHeader,
+          dltTemplateId: DLT_CONFIG.jioDltConfig.approvedTemplateId,
+          msg91TemplateId,
+          timestamp: new Date().toISOString(),
+        });
+      } catch (gatewayErr: any) {
+        console.error('MSG91 Send OTP Exception:', gatewayErr);
+        return sendJson(res, 504, {
+          success: false,
+          code: 'GATEWAY_TIMEOUT',
+          deliveryStatus: 'GATEWAY_UNREACHABLE',
+          message: 'Telecom OTP gateway timed out. Please check your connection and try again.',
+        });
+      }
     }
 
-    // 12. Verify OTP API
+    // 12. Verify OTP API (Strict Live MSG91 Verification — Zero Dummy / Fallback Codes)
     if (pathname === '/api/sms/verify-otp' && req.method === 'POST') {
       const { phone, otp } = await parseJsonBody(req);
-      const rawDigits = String(phone || '').replace(/\D/g, '');
-      const cleanPhone = rawDigits.length >= 10 ? rawDigits.slice(-10) : '';
-      const enteredOtp = String(otp || '').trim();
+      const cleanPhone = normalizeIndianMobile(phone);
+      const enteredOtp = String(otp || '').replace(/\D/g, '').trim();
 
-      const cached = cleanPhone ? otpCache.get(cleanPhone) : null;
-
-      if (!enteredOtp) {
-        return sendJson(res, 400, { success: false, verified: false, message: 'Please enter a valid OTP' });
+      if (!cleanPhone) {
+        return sendJson(res, 400, {
+          success: false,
+          verified: false,
+          message: 'Invalid mobile number. Please enter a 10-digit Indian mobile number.',
+        });
       }
 
-      // Allow if matches cached OTP and not expired, or in demo testing if valid 6-digit format
-      let isValid = false;
-      if (cached && cached.otp === enteredOtp && cached.expiresAt > Date.now()) {
-        isValid = true;
-        otpCache.delete(cleanPhone); // consume OTP
-      } else if (enteredOtp.length === 6 && /^\d{6}$/.test(enteredOtp)) {
-        // Fallback demo/valid OTP
-        isValid = true;
+      if (!/^\d{6}$/.test(enteredOtp)) {
+        return sendJson(res, 400, {
+          success: false,
+          verified: false,
+          message: 'Please enter the exact 6-digit OTP sent to your mobile number.',
+        });
       }
 
-      if (isValid) {
+      const cached = otpCache.get(cleanPhone);
+      if (cached && cached.attempts >= cached.maxAttempts) {
+        otpCache.delete(cleanPhone);
+        return sendJson(res, 429, {
+          success: false,
+          verified: false,
+          message: 'Maximum OTP attempts exceeded. Please request a new OTP.',
+        });
+      }
+
+      let isVerified = false;
+      let verifiedVia = '';
+      let gatewayErrorMessage = '';
+
+      // Primary check: Live MSG91 v5 OTP Verify API (works reliably across server restarts/instances)
+      if (MSG91_AUTH_KEY) {
+        try {
+          const verifyParams = new URLSearchParams({
+            otp: enteredOtp,
+            mobile: `91${cleanPhone}`,
+          });
+          const verifyRes = await fetch(
+            `https://control.msg91.com/api/v5/otp/verify?${verifyParams.toString()}`,
+            {
+              method: 'GET',
+              headers: {
+                authkey: MSG91_AUTH_KEY,
+              },
+              signal: AbortSignal.timeout(8000),
+            }
+          );
+
+          const resText = await verifyRes.text();
+          let parsedVerify: any;
+          try {
+            parsedVerify = JSON.parse(resText);
+          } catch {
+            parsedVerify = { raw: resText };
+          }
+
+          if (verifyRes.ok && parsedVerify?.type === 'success') {
+            isVerified = true;
+            verifiedVia = 'MSG91_LIVE';
+          } else {
+            gatewayErrorMessage = String(parsedVerify?.message || '');
+            // If MSG91 explicitly rejected (not match / expired / not found), do NOT bypass
+            const lowerMsg = gatewayErrorMessage.toLowerCase();
+            if (
+              lowerMsg.includes('not match') ||
+              lowerMsg.includes('invalid') ||
+              lowerMsg.includes('expired') ||
+              lowerMsg.includes('not found')
+            ) {
+              if (cached) {
+                cached.attempts += 1;
+              }
+              return sendJson(res, 400, {
+                success: false,
+                verified: false,
+                message: lowerMsg.includes('expired')
+                  ? 'OTP has expired. Please request a fresh OTP.'
+                  : 'Incorrect OTP code. Please check the SMS from TWRSHI and try again.',
+              });
+            }
+          }
+        } catch (verifyErr: any) {
+          console.warn('MSG91 Verify API network issue, checking server hash record:', verifyErr?.message);
+          // Secondary check ONLY if MSG91 verify API had a transient network timeout AND OTP was genuinely delivered via MSG91
+          if (
+            cached &&
+            cached.deliveredViaMsg91 &&
+            cached.expiresAt > Date.now() &&
+            hashOtp(cleanPhone, enteredOtp, cached.salt) === cached.otpHash
+          ) {
+            isVerified = true;
+            verifiedVia = 'SERVER_HASH_CONFIRMED_MSG91';
+          }
+        }
+      }
+
+      if (isVerified) {
+        otpCache.delete(cleanPhone);
         return sendJson(res, 200, {
           success: true,
           verified: true,
+          verifiedVia,
           phone: cleanPhone,
-          message: 'Phone number verified successfully via Jio DLT verification.',
+          message: 'Mobile number verified successfully via Reliance Jio DLT / MSG91.',
           entity: DLT_CONFIG.entityName,
           header: DLT_CONFIG.primaryHeader,
           verifiedAt: new Date().toISOString(),
         });
-      } else {
+      }
+
+      if (cached) {
+        cached.attempts += 1;
+      }
+
+      return sendJson(res, 400, {
+        success: false,
+        verified: false,
+        message: gatewayErrorMessage || 'Invalid or expired OTP code. Please enter the exact 6-digit code from your SMS.',
+      });
+    }
+
+    // 13. Resend OTP API (Live MSG91 Retry — Supports SMS Text & Voice Call)
+    if (pathname === '/api/sms/resend-otp' && req.method === 'POST') {
+      const { phone, retryType } = await parseJsonBody(req);
+      const cleanPhone = normalizeIndianMobile(phone);
+      const channel = retryType === 'voice' ? 'voice' : 'text';
+
+      if (!cleanPhone) {
         return sendJson(res, 400, {
           success: false,
-          verified: false,
-          message: 'Invalid or expired OTP code. Please check and try again.',
+          message: 'Please provide a valid 10-digit Indian mobile number.',
+        });
+      }
+
+      if (!MSG91_AUTH_KEY) {
+        return sendJson(res, 503, {
+          success: false,
+          message: 'SMS OTP gateway is not configured on the server.',
+        });
+      }
+
+      const now = Date.now();
+      const rateEntry = otpRateLimits.get(cleanPhone);
+      if (rateEntry && now - rateEntry.lastSentAt < 25 * 1000) {
+        const waitSecs = Math.ceil((25 * 1000 - (now - rateEntry.lastSentAt)) / 1000);
+        return sendJson(res, 429, {
+          success: false,
+          retryAfterSeconds: waitSecs,
+          message: `Please wait ${waitSecs} seconds before requesting another OTP.`,
+        });
+      }
+
+      try {
+        // Attempt official MSG91 OTP retry first (re-sends active OTP via SMS or Voice Call)
+        const retryParams = new URLSearchParams({
+          retrytype: channel,
+          mobile: `91${cleanPhone}`,
+        });
+
+        const retryRes = await fetch(
+          `https://control.msg91.com/api/v5/otp/retry?${retryParams.toString()}`,
+          {
+            method: 'GET',
+            headers: {
+              authkey: MSG91_AUTH_KEY,
+            },
+            signal: AbortSignal.timeout(10000),
+          }
+        );
+
+        const retryText = await retryRes.text();
+        let parsedRetry: any;
+        try {
+          parsedRetry = JSON.parse(retryText);
+        } catch {
+          parsedRetry = { raw: retryText };
+        }
+
+        if (retryRes.ok && parsedRetry?.type === 'success') {
+          otpRateLimits.set(cleanPhone, {
+            lastSentAt: now,
+            count: (rateEntry?.count || 0) + 1,
+            windowStart: rateEntry?.windowStart || now,
+          });
+
+          return sendJson(res, 200, {
+            success: true,
+            channel,
+            deliveryStatus: channel === 'voice' ? 'LIVE_VOICE_OTP_MSG91' : 'LIVE_RESENT_SMS_MSG91',
+            message:
+              channel === 'voice'
+                ? `Voice call OTP initiated to +91 ${cleanPhone.slice(0, 2)}******${cleanPhone.slice(-2)}. Please answer the call.`
+                : `OTP re-sent via Jio DLT [${DLT_CONFIG.primaryHeader}] to +91 ${cleanPhone.slice(0, 2)}******${cleanPhone.slice(-2)}.`,
+            phone: cleanPhone,
+            timestamp: new Date().toISOString(),
+          });
+        }
+
+        // If previous OTP expired on MSG91, automatically dispatch a fresh live SMS OTP
+        const freshOtp = crypto.randomInt(100000, 1000000).toString();
+        const msg91TemplateId = process.env.MSG91_TEMPLATE_ID || DLT_CONFIG.msg91Config.templateId;
+        const freshParams = new URLSearchParams({
+          template_id: msg91TemplateId,
+          mobile: `91${cleanPhone}`,
+          otp: freshOtp,
+          otp_expiry: '3',
+          otp_length: '6',
+          realTimeResponse: '1',
+        });
+
+        const freshRes = await fetch(`https://control.msg91.com/api/v5/otp?${freshParams.toString()}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authkey: MSG91_AUTH_KEY,
+          },
+          body: JSON.stringify({}),
+          signal: AbortSignal.timeout(10000),
+        });
+
+        const freshData = await freshRes.json().catch(() => ({}));
+        if (freshRes.ok && freshData?.type === 'success') {
+          const salt = crypto.randomBytes(16).toString('hex');
+          otpCache.set(cleanPhone, {
+            otpHash: hashOtp(cleanPhone, freshOtp, salt),
+            salt,
+            expiresAt: now + 3 * 60 * 1000,
+            attempts: 0,
+            maxAttempts: 5,
+            deliveredViaMsg91: true,
+            sentAt: now,
+            purpose: 'resend',
+          });
+          otpRateLimits.set(cleanPhone, {
+            lastSentAt: now,
+            count: (rateEntry?.count || 0) + 1,
+            windowStart: rateEntry?.windowStart || now,
+          });
+
+          return sendJson(res, 200, {
+            success: true,
+            channel: 'text',
+            deliveryStatus: 'LIVE_DELIVERED_MSG91',
+            requestId: freshData?.request_id || null,
+            message: `Fresh 6-digit OTP sent via Jio DLT [${DLT_CONFIG.primaryHeader}].`,
+            phone: cleanPhone,
+            timestamp: new Date().toISOString(),
+          });
+        }
+
+        return sendJson(res, 502, {
+          success: false,
+          message: parsedRetry?.message || freshData?.message || 'Unable to resend OTP right now. Please try again shortly.',
+        });
+      } catch (err: any) {
+        console.error('MSG91 Resend OTP Exception:', err);
+        return sendJson(res, 504, {
+          success: false,
+          message: 'Telecom gateway timed out while resending OTP. Please try again.',
         });
       }
     }
 
-    // 13. Resend OTP API
-    if (pathname === '/api/sms/resend-otp' && req.method === 'POST') {
-      const { phone } = await parseJsonBody(req);
-      const rawDigits = String(phone || '').replace(/\D/g, '');
-      const cleanPhone = rawDigits.length >= 10 ? rawDigits.slice(-10) : '9831049814';
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-      otpCache.set(cleanPhone, {
-        otp,
-        expiresAt: Date.now() + 10 * 60 * 1000,
-        purpose: 'resend',
-      });
-
-      return sendJson(res, 200, {
-        success: true,
-        message: `New OTP dispatched via Jio DLT (${DLT_CONFIG.primaryHeader})`,
-        phone: cleanPhone,
-        otp,
-        timestamp: new Date().toISOString(),
-      });
-    }
-
-    // 14. Server Outbound IP Diagnostics for MSG91 Whitelisting
+    // 14. Server Outbound IP & Live MSG91 Connectivity Diagnostics
     if (pathname === '/api/sms/ip-diagnostics' && req.method === 'GET') {
       let outboundIp = 'Unknown';
       let pingStatus = 'unreachable';
       let isIpBlocked = false;
+      let gatewayMessage = '';
 
       try {
         const ipRes = await fetch('https://api.ipify.org?format=json', { signal: AbortSignal.timeout(3500) });
@@ -794,20 +1115,33 @@ ${name}:`;
         console.warn('Could not fetch outbound IP:', err);
       }
 
-      // Check MSG91 API reachability
+      // Non-sending live auth & IP whitelist probe against MSG91 control host
       try {
-        const msg91Ping = await fetch('https://api.msg91.com/api/v5/otp', {
-          method: 'OPTIONS',
-          signal: AbortSignal.timeout(3500),
-        });
-        if (msg91Ping.status === 418) {
+        const msg91Ping = await fetch(
+          'https://control.msg91.com/api/v5/otp/verify?otp=000000&mobile=910000000000',
+          {
+            method: 'GET',
+            headers: {
+              authkey: MSG91_AUTH_KEY,
+            },
+            signal: AbortSignal.timeout(4500),
+          }
+        );
+        const pingData = await msg91Ping.json().catch(() => ({}));
+        gatewayMessage = String(pingData?.message || '');
+
+        if (msg91Ping.status === 418 || gatewayMessage.toLowerCase().includes('ip')) {
           isIpBlocked = true;
           pingStatus = 'ip_not_whitelisted_418';
+        } else if (msg91Ping.status === 401 || gatewayMessage.toLowerCase().includes('authentication failure')) {
+          pingStatus = 'invalid_authkey';
+        } else if (msg91Ping.ok) {
+          pingStatus = 'live_connected';
         } else {
-          pingStatus = 'reachable';
+          pingStatus = `http_${msg91Ping.status}`;
         }
       } catch {
-        pingStatus = 'reachable_ssl';
+        pingStatus = 'timeout';
       }
 
       return sendJson(res, 200, {
@@ -815,13 +1149,17 @@ ${name}:`;
         outboundIp,
         isIpBlocked,
         pingStatus,
+        gatewayMessage,
         telecomOperator: DLT_CONFIG.telecomOperator,
         entityName: DLT_CONFIG.entityName,
         principalEntityId: DLT_CONFIG.principalEntityId,
         primaryHeader: DLT_CONFIG.primaryHeader,
+        headerRegistrationId: DLT_CONFIG.jioDltConfig.headerRegistrationId,
         msg91TemplateId: DLT_CONFIG.msg91Config.templateId,
         jioDltTemplateId: DLT_CONFIG.jioDltConfig.approvedTemplateId,
-        instruction: `In MSG91 dashboard (control.msg91.com), go to Authkey -> Actions -> IP Security -> Whitelist IP, and add: ${outboundIp}`,
+        instruction: isIpBlocked
+          ? `In MSG91 dashboard (control.msg91.com), go to Authkey → Actions → IP Security → Whitelist IP, and add: ${outboundIp}`
+          : `MSG91 Live Gateway is connected and ready from IP ${outboundIp} with Sender ID ${DLT_CONFIG.primaryHeader}.`,
       });
     }
 

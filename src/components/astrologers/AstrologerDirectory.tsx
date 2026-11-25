@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { Astrologer, ConsultationType } from '../../types/astrology.ts';
 import { FreeTrialBanner } from '../growth/FreeTrialBanner.tsx';
+import { CosmicDailyHub } from '../growth/CosmicDailyHub.tsx';
 import { useTranslation } from '../../i18n/useTranslation.ts';
 
 interface AstrologerDirectoryProps {
@@ -231,8 +232,11 @@ export const AstrologerDirectory: React.FC<AstrologerDirectoryProps> = ({
         </div>
       )}
 
-      {/* AstroTalk Style New User Welcome Free Trial Banner */}
+      {/* New User Welcome Free Trial Banner */}
       <FreeTrialBanner />
+
+      {/* 12Rashi Unique Retention Engine: Live Vedic Hora, Digital 108-Bead Japa Mala & 10s Acharya Matchmaker */}
+      <CosmicDailyHub onNavigate={onNavigate} />
 
       {/* Quick Human-Centric Services Grid */}
       <div className="bg-white dark:bg-stone-900 rounded-3xl p-4 sm:p-5 border border-stone-200 dark:border-stone-800 shadow-xs space-y-3">

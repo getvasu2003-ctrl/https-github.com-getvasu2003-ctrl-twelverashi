@@ -124,14 +124,8 @@ export async function sendSmsOtp(payload: {
     return await res.json();
   } catch {
     return {
-      success: true,
-      phone: payload.phone,
-      otp: Math.floor(100000 + Math.random() * 900000).toString(),
-      deliveryStatus: 'LIVE_DELIVERED_MSG91',
-      telecomOperator: 'Reliance Jio Infocomm Ltd (Jio DLT - TrueConnect)',
-      header: 'TWRSHI',
-      dltTemplateId: '6935bfc0a6240e24e80be279',
-      msg91TemplateId: '6935bfc0a6240e24e80be279',
+      success: false,
+      message: 'Network error while reaching the SMS OTP gateway. Please check your internet connection and try again.',
     };
   }
 }
@@ -149,14 +143,14 @@ export async function verifySmsOtp(payload: {
     return await res.json();
   } catch {
     return {
-      success: true,
-      verified: true,
-      message: 'Verified successfully (Demo Mode)',
+      success: false,
+      verified: false,
+      message: 'Network error while verifying OTP. Please try again.',
     };
   }
 }
 
-export async function resendSmsOtp(payload: { phone: string }): Promise<any> {
+export async function resendSmsOtp(payload: { phone: string; retryType?: 'text' | 'voice' }): Promise<any> {
   try {
     const res = await fetch('/api/sms/resend-otp', {
       method: 'POST',
@@ -166,9 +160,8 @@ export async function resendSmsOtp(payload: { phone: string }): Promise<any> {
     return await res.json();
   } catch {
     return {
-      success: true,
-      otp: Math.floor(100000 + Math.random() * 900000).toString(),
-      message: 'New OTP dispatched via Jio DLT (TWRSHI)',
+      success: false,
+      message: 'Network error while resending OTP. Please try again.',
     };
   }
 }
