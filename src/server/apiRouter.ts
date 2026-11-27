@@ -427,8 +427,8 @@ ${name}:`;
     if (pathname === '/api/cashfree/create-order' && req.method === 'POST') {
       const { amount, customerName, customerEmail, customerPhone, orderNote } = await parseJsonBody(req);
       const parsedAmount = Math.max(1, Number(Number(amount || 100).toFixed(2)));
-      const rawPhone = String(customerPhone || '9831039814').replace(/\D/g, '');
-      const cleanPhone = rawPhone.length >= 10 ? rawPhone.slice(-10) : '9831039814';
+      const rawPhone = String(customerPhone || '9831049814').replace(/\D/g, '');
+      const cleanPhone = rawPhone.length >= 10 ? rawPhone.slice(-10) : '9831049814';
       const orderId = `order_12r_${Date.now()}_${Math.floor(100 + Math.random() * 900)}`;
       const customerId = `cust_${cleanPhone}`;
 

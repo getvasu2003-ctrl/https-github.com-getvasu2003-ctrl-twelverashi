@@ -418,7 +418,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: 'PO-9821',
       amount: 12500,
       method: 'UPI',
-      destinationAccount: '9831039814@upi',
+      destinationAccount: '9831049814@upi',
       utrNumber: 'UPI/428901842019/12R',
       requestedDate: '24 Sep 2026',
       status: 'PROCESSED',
@@ -428,7 +428,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       amount: 15200,
       method: 'NEFT/IMPS',
       destinationAccount: 'HDFC Bank A/C ...9814 (IFSC: HDFC0000124)',
-      utrNumber: 'HDFC983103981421',
+      utrNumber: 'HDFC983104981421',
       requestedDate: '17 Sep 2026',
       status: 'PROCESSED',
     },
@@ -1350,7 +1350,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       astrologerId: targetAstro.id,
       name: targetAstro.name,
       email: `${targetAstro.name.toLowerCase().replace(/[^a-z]/g, '')}@12rashi.com`,
-      phone: customPhone || '9831039814',
+      phone: customPhone || '9831049814',
       role: 'partner_astrologer',
       joinedDate: '15 March 2024',
       panVerified: true,
@@ -1463,7 +1463,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     accountDetails?: string
   ) => {
     const payoutAmount = typeof amountOrUpi === 'number' ? amountOrUpi : partnerEarnings.pendingPayout;
-    const dest = typeof amountOrUpi === 'string' ? amountOrUpi : (accountDetails || '9831039814@upi');
+    const dest = typeof amountOrUpi === 'string' ? amountOrUpi : (accountDetails || '9831049814@upi');
 
     if (payoutAmount <= 0) return;
 
@@ -1487,7 +1487,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // Send DLT SMS alert
     dispatchDltSms({
-      mobileNumber: partnerAuthUser?.phone || '9831039814',
+      mobileNumber: partnerAuthUser?.phone || '9831049814',
       templateId: '1207161829038472915',
       headerId: 'RSHDLT',
       variables: [String(payoutAmount), String(Math.max(0, partnerEarnings.pendingPayout - payoutAmount)), utr],

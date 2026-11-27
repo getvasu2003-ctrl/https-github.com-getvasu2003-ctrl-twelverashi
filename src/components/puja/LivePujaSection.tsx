@@ -131,7 +131,7 @@ export const LivePujaSection: React.FC<LivePujaSectionProps> = ({ onConsultClick
         amount: amountToPay,
         customerName: devoteeName,
         customerEmail: user?.email || 'devotee@12rashi.com',
-        customerPhone: user?.phone || '9831039814',
+        customerPhone: user?.phone || '9831049814',
         orderNote: note,
       });
 

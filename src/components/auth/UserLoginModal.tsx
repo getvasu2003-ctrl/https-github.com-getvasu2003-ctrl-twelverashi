@@ -699,7 +699,7 @@ export const UserLoginModal: React.FC<UserLoginModalProps> = ({
                     />
                   </div>
                   <p className="text-[11px] text-stone-500 dark:text-stone-400">
-                    Real SMS OTP delivered via Reliance Jio DLT / MSG91 · Zero spam calls
+                    Instant secure SMS verification · Zero spam calls
                   </p>
                 </div>
 
@@ -871,7 +871,7 @@ export const UserLoginModal: React.FC<UserLoginModalProps> = ({
       {/* Footer Assurance */}
       <div className="p-3.5 bg-stone-50 dark:bg-stone-900/70 border-t border-stone-200 dark:border-stone-800 text-center text-[11px] text-stone-500 flex items-center justify-center gap-2 shrink-0">
         <Lock className="w-3.5 h-3.5 text-stone-400" />
-        <span>12Rashi Astrology (12rashi Infotech) · TRAI DLT Secured</span>
+        <span>12Rashi Astrology · Secure & Encrypted</span>
       </div>
     </div>
   );

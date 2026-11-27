@@ -202,7 +202,7 @@ export const DailyAudioRashiFalPush: React.FC<DailyAudioRashiFalPushProps> = ({
       `⏳ Abhijit Muhurat: 11:38 AM - 12:26 PM\n` +
       `⚠️ Rahu Kaal: 12:00 PM - 01:30 PM\n\n` +
       `Listen to audio horoscope on 12Rashi: https://12rashi.com\n` +
-      `Helpline: +91 9831039814`;
+      `Helpline: +91 9831049814`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -644,7 +644,7 @@ export const DailyAudioRashiFalPush: React.FC<DailyAudioRashiFalPushProps> = ({
                 onChange={(e) =>
                   updateMorningPushSubscription({ whatsappPhone: e.target.value })
                 }
-                placeholder="+91 9831039814"
+                placeholder="+91 9831049814"
                 className="w-full p-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-xs font-mono font-bold outline-hidden"
               />
             </div>

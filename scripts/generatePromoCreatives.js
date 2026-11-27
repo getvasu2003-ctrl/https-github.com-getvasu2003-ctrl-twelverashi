@@ -122,7 +122,7 @@ const svgPost1 = `
     🔒 100% गोपनीय • प्रमाणित ज्योतिषी • तुरंत लाइव कनेक्ट
   </text>
   <text x="540" y="1000" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" fill="#ffffff" opacity="0.8">
-    Visit: www.12rashi.com | Helpline: +91 9831039814
+    Visit: www.12rashi.com | Helpline: +91 9831049814
   </text>
 </svg>
 `;

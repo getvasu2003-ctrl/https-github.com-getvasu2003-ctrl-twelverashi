@@ -96,7 +96,7 @@ export const PartnerDashboard: React.FC = () => {
   // Payout Form States
   const [withdrawAmount, setWithdrawAmount] = useState<number>(partnerEarnings.pendingPayout || 5000);
   const [payoutMethod, setPayoutMethod] = useState<'UPI' | 'NEFT/IMPS'>('UPI');
-  const [payoutDestination, setPayoutDestination] = useState('9831039814@upi');
+  const [payoutDestination, setPayoutDestination] = useState('9831049814@upi');
 
   // Client Interaction states
   const [selectedRecord, setSelectedRecord] = useState<PartnerConsultationRecord>(
@@ -553,7 +553,7 @@ export const PartnerDashboard: React.FC = () => {
               <div className="space-y-2 text-stone-600 dark:text-stone-300 text-[11px] leading-relaxed">
                 <p>✓ All consultations are routed through 12Rashi's 256-bit encrypted audio/video nodes.</p>
                 <p>✓ 70% net consultation fees are credited instantly upon completion (70/30 platform revenue split).</p>
-                <p>✓ Daily DLT SMS session summaries sent to registered mobile: <strong>9831039814</strong>.</p>
+                <p>✓ Daily DLT SMS session summaries sent to registered mobile: <strong>9831049814</strong>.</p>
                 <p>✓ Maintain dignified Parashari astrological ethics without inducing fear or superstitious panic.</p>
               </div>
 
@@ -897,7 +897,7 @@ export const PartnerDashboard: React.FC = () => {
                       type="button"
                       onClick={() => {
                         setPayoutMethod('UPI');
-                        setPayoutDestination('9831039814@upi');
+                        setPayoutDestination('9831049814@upi');
                       }}
                       className={`py-2 px-3 rounded-xl border font-bold transition cursor-pointer text-center ${
                         payoutMethod === 'UPI'

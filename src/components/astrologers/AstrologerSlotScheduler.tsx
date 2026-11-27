@@ -723,7 +723,7 @@ export const AstrologerSlotScheduler: React.FC<AstrologerSlotSchedulerProps> = (
                 Automated WhatsApp & SMS Notifications
               </span>
               <span className="text-[10px] text-emerald-700 dark:text-emerald-400 block">
-                Calendar invite + reminder ping sent to <strong>+91 {userProfile.phone || '9831039814'}</strong>
+                Calendar invite + reminder ping sent to <strong>+91 {userProfile.phone || '9831049814'}</strong>
               </span>
             </div>
           </div>

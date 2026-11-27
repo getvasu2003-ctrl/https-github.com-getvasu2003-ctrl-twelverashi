@@ -182,7 +182,7 @@ export const DoshaRemedyBookingModal: React.FC = () => {
       `Date: ${confirmedBooking.date}\n\n` +
       `Priest chants personal Name & Gotra at the Garbhagriha.\n` +
       `Verify on 12Rashi: https://12rashi.com\n` +
-      `Helpline: +91 9831039814`;
+      `Helpline: +91 9831049814`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 

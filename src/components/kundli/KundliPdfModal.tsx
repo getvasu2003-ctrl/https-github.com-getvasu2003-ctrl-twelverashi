@@ -306,7 +306,7 @@ export const KundliPdfModal: React.FC = () => {
               <div>
                 <span className="font-bold text-stone-900 dark:text-stone-100 block">Verified by 12Rashi Astrological Council</span>
                 <span className="text-[11px] text-stone-500">Chief Astrologer: Pt. Vasudev Shastri (Kolkata)</span>
-                <span className="text-[10px] text-emerald-600 block mt-0.5 font-bold">TRAI DLT Header: TWRSHI • Entity: 12RASHIINFOTECH</span>
+                <span className="text-[10px] text-emerald-600 block mt-0.5 font-bold">Certified Vedic Ephemeris & Horoscope Engine</span>
               </div>
             </div>
 

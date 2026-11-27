@@ -56,7 +56,7 @@ export const ShubhShagunGiftCards: React.FC<ShubhShagunGiftCardsProps> = ({ onRe
   const [selectedOccasion, setSelectedOccasion] = useState<string>('birthday');
   const [senderName, setSenderName] = useState(user?.name || 'Vasudev Sharma');
   const [recipientName, setRecipientName] = useState('Priya Sharma');
-  const [recipientPhone, setRecipientPhone] = useState('+91 9831039814');
+  const [recipientPhone, setRecipientPhone] = useState('+91 9831049814');
   const [blessingMessage, setBlessingMessage] = useState('May the Navagrahas bestow wisdom, sound health, and eternal prosperity upon you!');
   const [isProcessing, setIsProcessing] = useState(false);
   const [purchasedVoucher, setPurchasedVoucher] = useState<ShubhShagunVoucher | null>(null);
@@ -135,7 +135,7 @@ export const ShubhShagunGiftCards: React.FC<ShubhShagunGiftCardsProps> = ({ onRe
       `🔑 *Redemption Voucher Code:* *${purchasedVoucher.code}*\n` +
       `Valid For: Live Pandit Calls, 50+ Page Kundli Dossiers, or E-Pujas.\n\n` +
       `👉 Redeem instantly here: https://12rashi.com/?tab=gift-cards&code=${purchasedVoucher.code}\n` +
-      `Astrology Helpline: +91 9831039814`;
+      `Astrology Helpline: +91 9831049814`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -302,7 +302,7 @@ export const ShubhShagunGiftCards: React.FC<ShubhShagunGiftCardsProps> = ({ onRe
                       value={recipientPhone}
                       onChange={(e) => setRecipientPhone(e.target.value)}
                       required
-                      placeholder="+91 9831039814"
+                      placeholder="+91 9831049814"
                       className="w-full p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-xs font-mono font-bold outline-hidden"
                     />
                   </div>
@@ -481,7 +481,7 @@ export const ShubhShagunGiftCards: React.FC<ShubhShagunGiftCardsProps> = ({ onRe
           </form>
 
           <div className="text-[10px] text-stone-400 text-center">
-            Need help? Contact Astrology Helpline: <strong>+91 9831039814</strong>
+            Need help? Contact Astrology Helpline: <strong>+91 9831049814</strong>
           </div>
         </div>
       )}

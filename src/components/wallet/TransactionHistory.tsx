@@ -417,7 +417,7 @@ export const TransactionHistory: React.FC<TransactionHistoryProps> = ({ onAddMon
                     </span>
 
                     <a
-                      href={`https://wa.me/919831039814?text=${encodeURIComponent(`Pranam! I need assistance regarding my 12Rashi transaction: ${t.id} for ₹${t.amount}.`)}`}
+                      href={`https://wa.me/919831049814?text=${encodeURIComponent(`Pranam! I need assistance regarding my 12Rashi transaction: ${t.id} for ₹${t.amount}.`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-stone-400 hover:text-orange-600 transition flex items-center gap-0.5 font-medium"
@@ -441,11 +441,11 @@ export const TransactionHistory: React.FC<TransactionHistoryProps> = ({ onAddMon
           <span>Billing Grievances & Instant Resolution:</span>
         </div>
         <a
-          href="tel:9831039814"
+          href="tel:9831049814"
           className="font-bold text-orange-600 dark:text-orange-400 hover:underline flex items-center gap-1"
         >
           <PhoneCall className="w-3 h-3" />
-          <span>+91 9831039814</span>
+          <span>+91 9831049814</span>
         </a>
       </div>
     </div>

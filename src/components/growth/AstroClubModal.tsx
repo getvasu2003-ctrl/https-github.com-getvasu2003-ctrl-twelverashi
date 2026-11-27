@@ -43,7 +43,7 @@ export const AstroClubModal: React.FC = () => {
         amount: currentPlan.price,
         customerName: userProfile.name || 'Vasu Sharma',
         customerEmail: userProfile.email || '12rashi.com@gmail.com',
-        customerPhone: userProfile.phone || '9831039814',
+        customerPhone: userProfile.phone || '9831049814',
         orderNote: `12Rashi VIP Club Subscription: ${currentPlan.name}`,
       });
 

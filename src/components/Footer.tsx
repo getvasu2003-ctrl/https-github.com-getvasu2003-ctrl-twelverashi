@@ -85,11 +85,11 @@ export const Footer: React.FC<{ setActiveTab: (t: string) => void }> = ({ setAct
 
             <div className="space-y-2 pt-2 text-xs">
               <a
-                href="tel:9831039814"
+                href="tel:9831049814"
                 className="flex items-center gap-2 text-orange-400 hover:text-orange-300 font-bold"
               >
                 <PhoneCall className="w-4 h-4 shrink-0" />
-                <span>+91 9831039814 (Helpline & WhatsApp)</span>
+                <span>+91 9831049814 (Helpline & WhatsApp)</span>
               </a>
 
               <a

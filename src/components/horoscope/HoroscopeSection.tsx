@@ -29,7 +29,7 @@ export const HoroscopeSection: React.FC<HoroscopeSectionProps> = ({ onOpenAudioB
   const [isPushed, setIsPushed] = useState(false);
 
   const handleShare = () => {
-    const text = `🌟 12Rashi Daily Horoscope for ${selectedRashi.nameEn} (${selectedRashi.nameSa}) 🌟\n\n"${selectedRashi.today.summary}"\n\n💼 Career: ${selectedRashi.today.career}\n❤️ Love: ${selectedRashi.today.love}\n🍀 Lucky Number: ${selectedRashi.today.luckyNumber} | Lucky Color: ${selectedRashi.today.luckyColor}\n\nRead more on 12Rashi: https://12rashi.com\nHelpline: +91 9831039814`;
+    const text = `🌟 12Rashi Daily Horoscope for ${selectedRashi.nameEn} (${selectedRashi.nameSa}) 🌟\n\n"${selectedRashi.today.summary}"\n\n💼 Career: ${selectedRashi.today.career}\n❤️ Love: ${selectedRashi.today.love}\n🍀 Lucky Number: ${selectedRashi.today.luckyNumber} | Lucky Color: ${selectedRashi.today.luckyColor}\n\nRead more on 12Rashi: https://12rashi.com\nHelpline: +91 9831049814`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 

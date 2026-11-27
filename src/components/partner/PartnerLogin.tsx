@@ -32,7 +32,7 @@ export const PartnerLogin: React.FC<PartnerLoginProps> = ({ onBackToSeeker }) =>
   const [authMode, setAuthMode] = useState<'password' | 'dlt_otp'>('password');
 
   // Sign In form fields
-  const [identifier, setIdentifier] = useState('9831039814');
+  const [identifier, setIdentifier] = useState('9831049814');
   const [password, setPassword] = useState('12rashi@2026');
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
@@ -226,7 +226,7 @@ export const PartnerLogin: React.FC<PartnerLoginProps> = ({ onBackToSeeker }) =>
           <div className="relative z-10 pt-5 mt-5 border-t border-white/15 text-[11px] text-amber-200/90">
             <span>Astrologer Onboarding Desk:</span>
             <div className="font-bold text-white text-xs mt-0.5">
-              📞 +91 9831039814 • 12rashi.com@gmail.com
+              📞 +91 9831049814 • 12rashi.com@gmail.com
             </div>
           </div>
         </div>
@@ -311,7 +311,7 @@ export const PartnerLogin: React.FC<PartnerLoginProps> = ({ onBackToSeeker }) =>
                       value={identifier}
                       onChange={(e) => setIdentifier(e.target.value)}
                       required
-                      placeholder="e.g. 9831039814 or ID"
+                      placeholder="e.g. 9831049814 or ID"
                       className="w-full px-3 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 text-xs outline-hidden focus:ring-2 focus:ring-orange-500 font-medium"
                     />
                   </div>

@@ -79,7 +79,7 @@ export const KundliGenerator: React.FC<KundliGeneratorProps> = ({ onOpenReports,
 
   const handleWhatsAppShare = () => {
     if (!currentKundli) return;
-    const shareText = `🌟 My Vedic Kundli on 12Rashi 🌟\nName: ${currentKundli.name}\nAscendant (Lagna): ${currentKundli.ascendant}\nMoon Sign (Rashi): ${currentKundli.moonSign}\nNakshatra: ${currentKundli.nakshatra} (Lord: ${currentKundli.nakshatraLord})\nCurrent Mahadasha: ${currentKundli.vimshottariDasha.mahadasha}\nCheck your free birth chart on 12Rashi: https://12rashi.com\nAstrology Helpline: +91 9831039814`;
+    const shareText = `🌟 My Vedic Kundli on 12Rashi 🌟\nName: ${currentKundli.name}\nAscendant (Lagna): ${currentKundli.ascendant}\nMoon Sign (Rashi): ${currentKundli.moonSign}\nNakshatra: ${currentKundli.nakshatra} (Lord: ${currentKundli.nakshatraLord})\nCurrent Mahadasha: ${currentKundli.vimshottariDasha.mahadasha}\nCheck your free birth chart on 12Rashi: https://12rashi.com\nAstrology Helpline: +91 9831049814`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
   };
 
@@ -789,7 +789,7 @@ export const KundliGenerator: React.FC<KundliGeneratorProps> = ({ onOpenReports,
               </div>
 
               <div className="pt-2 border-t border-white/20 flex items-center justify-between text-[10px] text-amber-200">
-                <span>📞 Astrologer Hotline: +91 9831039814</span>
+                <span>📞 Astrologer Hotline: +91 9831049814</span>
                 <span>Kolkata, WB</span>
               </div>
             </div>

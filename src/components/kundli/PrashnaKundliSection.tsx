@@ -78,7 +78,7 @@ export const PrashnaKundliSection: React.FC<PrashnaKundliSectionProps> = ({ onCo
       `Prashna Lagna: ${result.prashnaLagna} (Lord: ${result.prashnaLagnaLord})\n` +
       `Remedy: ${result.prescribedRemedy}\n\n` +
       `Calculated via Chitrapaksha Ephemeris: https://12rashi.com\n` +
-      `Astrology Helpline: +91 9831039814`;
+      `Astrology Helpline: +91 9831049814`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 

@@ -30,7 +30,7 @@ export const WhatsAppReceiptModal: React.FC = () => {
   const totalWithTax = r.cost;
 
   const handleShareToWhatsApp = () => {
-    const text = `📜 *12Rashi Verified Consultation Receipt*\n👤 Astrologer: ${r.astrologerName}\n⏱️ Duration: ${mins}m ${secs}s (Metered @ ₹${r.perSecondRate.toFixed(2)}/sec)\n💰 Amount: ₹${r.cost} (Incl. 18% GST)\n💼 Remaining Balance: ₹${walletBalance}\n\n✨ *Prescribed Remedy:* ${r.prescribedRemedies?.[0]?.title || 'Recite Gayatri Mantra'}\n\nRecharge or Consult Again: https://12rashi.com\nHelpline: +91 9831039814`;
+    const text = `📜 *12Rashi Verified Consultation Receipt*\n👤 Astrologer: ${r.astrologerName}\n⏱️ Duration: ${mins}m ${secs}s (Metered @ ₹${r.perSecondRate.toFixed(2)}/sec)\n💰 Amount: ₹${r.cost} (Incl. 18% GST)\n💼 Remaining Balance: ₹${walletBalance}\n\n✨ *Prescribed Remedy:* ${r.prescribedRemedies?.[0]?.title || 'Recite Gayatri Mantra'}\n\nRecharge or Consult Again: https://12rashi.com\nHelpline: +91 9831049814`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -50,7 +50,7 @@ export const WhatsAppReceiptModal: React.FC = () => {
                   ✓
                 </span>
               </div>
-              <span className="text-[11px] text-emerald-100 font-mono">+91 9831039814 • Business Account</span>
+              <span className="text-[11px] text-emerald-100 font-mono">+91 9831049814 • Business Account</span>
             </div>
           </div>
 

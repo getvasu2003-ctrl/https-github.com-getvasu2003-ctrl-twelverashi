@@ -63,7 +63,7 @@ export const PaymentModal: React.FC = () => {
   const [isCustom, setIsCustom] = useState(false);
   const [bonusPercent, setBonusPercent] = useState<number>(10);
   const [paymentMethod, setPaymentMethod] = useState<'cashfree' | 'upi_qr' | 'upi_vpa' | 'netbanking' | 'card' | 'quick_test'>('cashfree');
-  const [upiId, setUpiId] = useState('9831039814@okhdfcbank');
+  const [upiId, setUpiId] = useState('9831049814@okhdfcbank');
   const [selectedBank, setSelectedBank] = useState('HDFC Bank');
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
@@ -271,7 +271,7 @@ export const PaymentModal: React.FC = () => {
           amount: amountToCharge,
           customerName: userProfile.name || 'Vasu Sharma',
           customerEmail: userProfile.email || '12rashi.com@gmail.com',
-          customerPhone: userProfile.phone || '9831039814',
+          customerPhone: userProfile.phone || '9831049814',
           orderNote: `12Rashi Astrological Wallet Top-up (+${bonusPercent}% Bonus)`,
         });
 
@@ -399,7 +399,7 @@ export const PaymentModal: React.FC = () => {
         amount: price,
         customerName: userProfile.name || 'Vasu Sharma',
         customerEmail: userProfile.email || '12rashi.com@gmail.com',
-        customerPhone: userProfile.phone || '9831039814',
+        customerPhone: userProfile.phone || '9831049814',
         orderNote: `12Rashi ${tier.toUpperCase()} VIP Club Membership`,
       });
 
@@ -873,7 +873,7 @@ export const PaymentModal: React.FC = () => {
                       type="text"
                       value={upiId}
                       onChange={(e) => setUpiId(e.target.value)}
-                      placeholder="e.g. 9831039814@upi or vasu@okhdfcbank"
+                      placeholder="e.g. 9831049814@upi or vasu@okhdfcbank"
                       className="w-full px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-xs outline-hidden"
                     />
                     <div className="flex gap-1.5 pt-1">

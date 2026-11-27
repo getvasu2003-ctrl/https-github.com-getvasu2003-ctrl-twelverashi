@@ -598,7 +598,7 @@ export const KundliReportsStore: React.FC<KundliReportsStoreProps> = ({ onConsul
 
                 <div className="space-y-1">
                   <label className="font-bold text-stone-700 dark:text-stone-300">
-                    WhatsApp Number (DLT SMS)
+                    WhatsApp Number for PDF Report Delivery
                   </label>
                   <input
                     type="tel"

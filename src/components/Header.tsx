@@ -122,8 +122,8 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             <span className="flex items-center gap-1.5 font-medium">
               <PhoneCall className="w-3 h-3 text-amber-200" />
               <span>Astrology Helpline:</span>
-              <a href="tel:9831039814" className="font-bold underline hover:text-amber-100">
-                +91 9831039814
+              <a href="tel:9831049814" className="font-bold underline hover:text-amber-100">
+                +91 9831049814
               </a>
             </span>
             <span className="hidden md:inline-block text-amber-200/60">|</span>

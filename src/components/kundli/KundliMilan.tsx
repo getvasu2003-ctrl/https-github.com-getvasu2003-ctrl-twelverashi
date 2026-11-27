@@ -129,7 +129,7 @@ export const KundliMilan: React.FC<KundliMilanProps> = ({ onConsultClick }) => {
       `Boy Rashi: ${result.boyRashi} (Nakshatra: ${result.boyNakshatra})\n` +
       `Girl Rashi: ${result.girlRashi} (Nakshatra: ${result.girlNakshatra})\n\n` +
       `Calculate your compatibility on 12Rashi: https://12rashi.com\n` +
-      `Helpline: +91 9831039814`;
+      `Helpline: +91 9831049814`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -162,7 +162,7 @@ export const KundliMilan: React.FC<KundliMilanProps> = ({ onConsultClick }) => {
         amount: price,
         customerName: userProfile.name || boyName,
         customerEmail: userProfile.email || '12rashi.com@gmail.com',
-        customerPhone: userProfile.phone || '9831039814',
+        customerPhone: userProfile.phone || '9831049814',
         orderNote: `12Rashi Kundli Milan Dossier: ${boyName} & ${girlName}`,
       });
 

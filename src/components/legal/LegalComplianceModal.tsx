@@ -199,7 +199,7 @@ export const LegalComplianceModal: React.FC = () => {
 
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase">Helpline & Direct Phone:</span>
-                    <span className="font-mono font-bold text-stone-900 dark:text-stone-100">+91 9831039814</span>
+                    <span className="font-mono font-bold text-stone-900 dark:text-stone-100">+91 9831049814</span>
                   </div>
                 </div>
 
